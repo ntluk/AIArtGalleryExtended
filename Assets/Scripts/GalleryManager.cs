@@ -14,13 +14,14 @@ public class GalleryManager : MonoBehaviour
 {
     //public static GalleryManager instance;
 
-    public List<GameObject> pictureFrames = new List<GameObject>();
-    public List<GameObject> picturePool = new List<GameObject>();
-    public List<GameObject> pictureSelection = new List<GameObject>();
-    private List<String> flickeringLights = new List<String>();
-    private List<String> focusedBefore = new List<String>();
-    private List<String> styles = new List<String>();
+    public List<GameObject> pictureFrames = new List<GameObject>();     //contains all picture frames
+    public List<GameObject> picturePool = new List<GameObject>();       //contains all picture prefabs
+    public List<GameObject> pictureSelection = new List<GameObject>();  //contains the selected picture prefabs for this run
+    //private List<String> flickeringLights = new List<String>();
+    private List<String> focusedBefore = new List<String>();            //contains the names of previously focused image segments
+    private List<String> styles = new List<String>();                   //contains the style descriptions of previously focused images
 
+    //front wall pictures
     public GameObject pictureF_A1;
     public GameObject pictureF_A2;
     public GameObject pictureF_A3;
@@ -40,6 +41,7 @@ public class GalleryManager : MonoBehaviour
     public GameObject pictureF_F2;
     public GameObject pictureF_F3;
 
+    //left wall pictures
     public GameObject pictureL_A1;
     public GameObject pictureL_A2;
     public GameObject pictureL_A3;
@@ -59,32 +61,35 @@ public class GalleryManager : MonoBehaviour
     public GameObject pictureL_F2;
     public GameObject pictureL_F3;
 
+    //final picture
     public GameObject personalized;
     public GameObject personalPrefab;
-
+    
+    //lights for light control
     public GameObject spotlight1;
     public GameObject spotlight2;
 
-    private GameObject focused;
-    private string focusedPictureFrame;
-    private String finalPrompt = "";
-    private String focusedLast = "";
-    private String changedLast = "";
-    private int swapCount = 0;
-    private int focusCount = 0;
-    private int numerOfKeywords = 0;
-    private bool isFlickering = false;
-    private bool sent = false;
-    private bool userIsOriented = false;
-    private bool removeFrames = false;
-    private bool cooldown = false;
-    private bool styleAdded = false;
+    private GameObject focused;             // currently focused object
+    private string focusedPictureFrame;     // frame containing the currently focused object
+    private String finalPrompt = "";        // contains the prompt for img gen
+    private String focusedLast = "";        // contains the name of the previously focused object
+    private String changedLast = "";        // contains the name of the previously picture swapped frame
+    private int swapCount = 0;              // counts the total amount of picture swaps
+    private int focusCount = 0;             // counts the amount of already focused objects 
+    //private int numerOfKeywords = 0;
+    //private bool isFlickering = false;
+    private bool sent = false;              // control var ; prompt sent or not ?
+    private bool userIsOriented = false;    // control var ; is orientation phase over ?
+    private bool removeFrames = false;      // control var ; start removing picture frames ?
+    private bool cooldown = false;          // control var ; picture swap on cooldown ?
+    private bool styleAdded = false;        // control var ; has a style alread been added to the prompt ?
 
-    private System.Random rnd;
-    private float timeDelay;
-    private int focusTime = 0;
-    private int remainingPictureFrames = 14;
+    private System.Random rnd;              // RNG
+    //private float timeDelay;
+    //private int focusTime = 0;               
+    private int remainingPictureFrames = 14;// amount of remaing picture frames in the scene
 
+    //UDP Sender for Prompt
     private UDPSend sender = new UDPSend();
 
    
@@ -92,16 +97,20 @@ public class GalleryManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //start UDP Sender
         sender.Start();
+        //init RNG
         rnd = new System.Random();
-
+        
+        //scene setup
         SetupRoom();
         SelectFromPool();
     }
 
     // Update is called once per frame
     void Update()
-    {
+    {   
+        //program flow
         if (Input.GetKeyDown("space"))
             ManageInput();
         
@@ -111,19 +120,18 @@ public class GalleryManager : MonoBehaviour
         if (removeFrames && !cooldown)
             StartCoroutine(RemovePictureFrames());
         
-
         if(pictureFrames.Count == 0)
         {
             gameObject.SetActive(false);
             personalized.SetActive(true);
-
+            
+            //set the first two prompt term as picture title
             string[] t = finalPrompt.ToString().Split(new[] { ',' }, 2);
             string title = t[0].ToUpper();
             personalized.GetComponentInChildren<TextMeshPro>().text = title;
         }
-        
     }
-
+    
     private void SelectFromPool()
     {
         for (int i = 0; i < pictureSelection.Count; i++)
@@ -144,6 +152,7 @@ public class GalleryManager : MonoBehaviour
             picturePool.Remove(picturePool[pos]);
         }
     }
+    
     private void CheckEyeFocus()
     {
         // Check for focused objects.
@@ -152,8 +161,8 @@ public class GalleryManager : MonoBehaviour
             
             focused = TobiiXR.FocusedObjects[0].GameObject;
             //Debug.Log(focused.transform.parent.parent.parent.name);
-            if (focusedLast.Contains(focused.name))
-                focusTime++;
+            //if (focusedLast.Contains(focused.name))
+                //focusTime++;
             focusedLast += focused.name;
             
             int pos = rnd.Next(0, pictureSelection.Count);
