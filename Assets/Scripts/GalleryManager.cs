@@ -21,7 +21,7 @@ public class GalleryManager : MonoBehaviour
     private List<String> focusedBefore = new List<String>();            //contains the names of previously focused image segments
     private List<String> styles = new List<String>();                   //contains the style descriptions of previously focused images
 
-    //front wall pictures
+    //picturesfront wall 
     public GameObject pictureF_A1;
     public GameObject pictureF_A2;
     public GameObject pictureF_A3;
@@ -41,7 +41,7 @@ public class GalleryManager : MonoBehaviour
     public GameObject pictureF_F2;
     public GameObject pictureF_F3;
 
-    //left wall pictures
+    //pictures left wall 
     public GameObject pictureL_A1;
     public GameObject pictureL_A2;
     public GameObject pictureL_A3;
@@ -132,6 +132,9 @@ public class GalleryManager : MonoBehaviour
         }
     }
     
+    /// <summary>
+    /// Selects pictures for the current run from the picture pool.  
+    /// </summary>
     private void SelectFromPool()
     {
         for (int i = 0; i < pictureSelection.Count; i++)
@@ -142,17 +145,27 @@ public class GalleryManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Places picture frames in scene and populates them with images from the picture pool.
+    /// </summary>
     private void SetupRoom()
     {
         for (int i = 0; i < pictureFrames.Count; i++)
         {
+            //get a random number between 0 and the size of the picture pool as index
             int pos = rnd.Next(0, picturePool.Count);
+            //Instantiate the prefab at the index in the pool at the position of the corresponding frame
             Instantiate(picturePool[pos], pictureFrames[i].transform);
+            //Destroy the initial picture object seen in the scene preview
             Destroy(pictureFrames[i].transform.GetChild(0).gameObject);
+            //Remove the used picture from the pool
             picturePool.Remove(picturePool[pos]);
         }
     }
     
+    /// <summary>
+    /// Checks the user's eye focus and handles the picture swapping feature.
+    /// </summary>
     private void CheckEyeFocus()
     {
         // Check for focused objects.
@@ -167,10 +180,12 @@ public class GalleryManager : MonoBehaviour
             
             int pos = rnd.Next(0, pictureSelection.Count);
 
+            // if the focused object has a frame as parent
             if (focused.transform.parent.parent.parent != null)
+                //save its name in this variable
                 focusedPictureFrame = focused.transform.parent.parent.parent.name;
 
-
+            // one case per picture frame in scene
             switch (focusedPictureFrame)
             {
                 case "PictureF_A1":
@@ -329,18 +344,33 @@ public class GalleryManager : MonoBehaviour
             //    Debug.Log(finalPrompt);
             //}
 
+            // add the name of the currently focused object to the list of previously focused objects
             focusedBefore.Add(focused.name);
+            // if the focused object has a text component
             if(focused.GetComponent<Text>() != null)
+                // add its content to the styles list
                 styles.Add(focused.GetComponent<Text>().text);
         }
     }
 
+    /// <summary>
+    /// Prevents the picture inside of the same frame from being swapped twice in a row.
+    /// </summary>
+    /// <param name="inFocus">object in focus</param> 
+    /// <param name="swapTarget">the picture frame that is supposed to swap pictures</param> 
+    /// <param name="picturePosInSelection">index position of the new picture inside of the picture selection</param> 
     private void ResolveCase(String inFocus, GameObject swapTarget, int picturePosInSelection)
     {
         if (!changedLast.Equals(inFocus) && pictureSelection.Count != 0)
             SwapPicture(inFocus, swapTarget, picturePosInSelection);
     }
 
+    /// <summary>
+    /// Swaps the picture being displayed in a given frame.
+    /// </summary>
+    /// <param name="inFocus">object in focus</param> 
+    /// <param name="swapTarget">the picture frame that is supposed to swap pictures</param> 
+    /// <param name="picturePosInSelection">index position of the new picture inside of the picture selection</param> 
     private void SwapPicture(String inFocus, GameObject swapTarget, int picturePosInSelection)
     {
         if(swapTarget != null)
@@ -365,12 +395,19 @@ public class GalleryManager : MonoBehaviour
     //        return false;
     //}
 
+    /// <summary>
+    /// Responds to space bar input by the app operator according to the current program state.
+    /// </summary>
     private void ManageInput()
-    {
+    {   
+        //  if the final picture is being displayed
         if (personalized.activeSelf)
         {
+            // reload scene
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
+
+        // if the prompt has been sent
         else if (sent)
         {
             //gameObject.SetActive(false);
@@ -383,6 +420,8 @@ public class GalleryManager : MonoBehaviour
             //title = title.Remove(title.Length);
             personalized.GetComponentInChildren<TextMeshPro>().text = title.ToUpper(); 
         }
+
+        // if the prompt has not been sent yet and the orientation pahes is over
         else if (!sent && userIsOriented)
         {
             ConstructPrompt();
@@ -391,34 +430,47 @@ public class GalleryManager : MonoBehaviour
             spotlight1.SetActive(false);
             spotlight2.SetActive(false);
         }
+
         else
+            // end orientation phase
             userIsOriented = true;
     }
 
+    /// <summary>
+    /// Constructs the prompt meant for image generation.
+    /// </summary>
     private void ConstructPrompt()
     {
+        // sort image sections by count of occurrences in focused before string using Linq(like SQL)
         var sortedFeatures = focusedBefore.GroupBy(x => x)
                     .Select(sortedFeatures => new { Value = 
                     sortedFeatures.Key, Count = sortedFeatures.Count()})
                     .OrderByDescending(x => x.Count);
 
+        // sort style elements by count of occurrences in styles string using Linq(like SQL)
         var sortedStyles = styles.GroupBy(x => x)
                     .Select(sortedStyles => new { Value = 
                     sortedStyles.Key, Count = sortedStyles.Count()})
                     .OrderByDescending(x => x.Count);
 
+        // adds the first element in sorted image features to the prompt + formatting
         if (!finalPrompt.Contains(sortedFeatures.ElementAt(0).Value) 
             && !sortedFeatures.ElementAt(0).Value.Contains("(Clone)"))
             finalPrompt += "(" + sortedFeatures.ElementAt(0).Value + ")" + ", ";
 
+        // adds the second element in sorted image features to the prompt + formatting
         if (!finalPrompt.Contains(sortedFeatures.ElementAt(1).Value) 
             && !sortedFeatures.ElementAt(1).Value.Contains("(Clone)"))
             finalPrompt += sortedFeatures.ElementAt(1).Value + ", ";
 
+        // adds the first element in sorted styles to the prompt + formatting
         if (!finalPrompt.Contains(sortedStyles.ElementAt(0).Value))
             finalPrompt += sortedStyles.ElementAt(0).Value + ", ";         
     }
 
+    /// <summary>
+    /// Sends the finished prompt to the second pc system for image generation.
+    /// </summary>
     private void SendPrompt()
     {
         if (!sent)
@@ -428,6 +480,13 @@ public class GalleryManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Coroutine removes a random picture frame every second.
+    /// (A coroutine allows you to spread tasks across several frames. 
+    /// In Unity, a coroutine is a method that can pause execution 
+    /// and return control to Unity but then continue where it left off on the following frame.)
+    /// </summary>
+    /// <returns>suspend execution for one second</returns>
     IEnumerator RemovePictureFrames()
     {
         cooldown = true;
