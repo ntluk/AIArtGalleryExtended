@@ -9,7 +9,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{3AFBC8B8-BF69-2C1C-D175-F60C6E4241B0}</ProjectGuid>
+    <ProjectGuid>{2D2E422D-6741-2411-0B1D-EC437D83B047}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Unity.VSCode.Editor</AssemblyName>
@@ -57,13 +57,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Library\PackageCache\com.unity.ide.vscode@1.2.5\Editor\VSCodeDiscovery.cs" />
+    <Compile Include="Library\PackageCache\com.unity.ide.vscode@1.2.5\Editor\ProjectGeneration\StringUtils.cs" />
     <Compile Include="Library\PackageCache\com.unity.ide.vscode@1.2.5\Editor\ProjectGeneration\GUIDGenerator.cs" />
     <Compile Include="Library\PackageCache\com.unity.ide.vscode@1.2.5\Editor\ProjectGeneration\AssemblyNameProvider.cs" />
     <Compile Include="Library\PackageCache\com.unity.ide.vscode@1.2.5\Editor\ProjectGeneration\ProjectGeneration.cs" />
     <Compile Include="Library\PackageCache\com.unity.ide.vscode@1.2.5\Editor\ProjectGeneration\FileIO.cs" />
     <Compile Include="Library\PackageCache\com.unity.ide.vscode@1.2.5\Editor\ProjectGeneration\ProjectGenerationFlag.cs" />
     <Compile Include="Library\PackageCache\com.unity.ide.vscode@1.2.5\Editor\VSCodeScriptEditor.cs" />
-    <Compile Include="Library\PackageCache\com.unity.ide.vscode@1.2.5\Editor\ProjectGeneration\StringUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Library\PackageCache\com.unity.ide.vscode@1.2.5\Editor\Unity.com.unity.vscode.Editor.asmdef" />
@@ -666,19 +666,19 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="UnityEditor.UI.csproj">
-      <Project>{18E032D0-1F5E-468D-7619-35B547BAA130}</Project>
+      <Project>{22C1791F-8765-D4C4-956C-9CC65DC31340}</Project>
       <Name>UnityEditor.UI</Name>
     </ProjectReference>
     <ProjectReference Include="UnityEngine.UI.csproj">
-      <Project>{CE1EFBA7-83AB-79C5-313B-ECE51B078ABC}</Project>
+      <Project>{D7BF8257-DE14-3CB5-98B6-7B9E48B0A9CE}</Project>
       <Name>UnityEngine.UI</Name>
     </ProjectReference>
     <ProjectReference Include="UnityEngine.TestRunner.csproj">
-      <Project>{1F79BA80-1C53-099B-4A2A-54F0BF4BCD26}</Project>
+      <Project>{5416782F-A919-10DC-8C9C-5228918BD7B9}</Project>
       <Name>UnityEngine.TestRunner</Name>
     </ProjectReference>
     <ProjectReference Include="UnityEditor.TestRunner.csproj">
-      <Project>{D62CE4F0-2901-E35D-F210-C5815B1845DF}</Project>
+      <Project>{2622C774-0835-E5FF-2790-D39E61DD4070}</Project>
       <Name>UnityEditor.TestRunner</Name>
     </ProjectReference>
   </ItemGroup>
