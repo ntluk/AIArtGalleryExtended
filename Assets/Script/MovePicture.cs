@@ -173,7 +173,7 @@ public class MovePicture : MonoBehaviour
                 }
 
                 //Debug.Log(dislikeList.Count);
-                Debug.Log(tempList.Count);
+                //Debug.Log(tempList.Count);
 
                 dislikeList.Clear();
 
