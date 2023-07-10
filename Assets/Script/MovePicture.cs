@@ -14,11 +14,11 @@ public class MovePicture : MonoBehaviour
     Vector3 VelVec;
     float VelVecFloat;
 
-    public GameObject BackgroundImage;
+    private GameObject BackgroundImage;
     public GameObject Image;
     public GameObject DislikeImage;
     public GameObject LikeImage;
-    public GameObject leftHand;
+    private GameObject leftHand;
 
     public int randomNumber;
 
@@ -36,8 +36,12 @@ public class MovePicture : MonoBehaviour
     float current;
     Vector3 vel;
 
-    bool sleep = false;
-    bool isSwipe;
+    private bool sleep = false;
+    private bool isSwipe;
+    private bool sent = false;
+
+    private UDPSend sender = new UDPSend();
+
 
     private Rigidbody l;
     // Start is called before the first frame update
@@ -126,6 +130,9 @@ public class MovePicture : MonoBehaviour
             Debug.Log("Like");
         }
 
+        if (sent)
+            SendPrompt();
+
     }
 
 
@@ -187,7 +194,8 @@ public class MovePicture : MonoBehaviour
             LikeAnim.GetComponent<Image>().enabled = true;            
             LikeAnim.GetComponent<Animator>().Play("Like");
 
-            promptText += FrontImg.name;
+            promptText += FrontImg.name + ", ";
+ 
 
             ChooseImage();
             sleep = true;
@@ -232,8 +240,6 @@ public class MovePicture : MonoBehaviour
             BackgroundImage.GetComponent<Image>().sprite = BackgroundImg;
             tempList.RemoveAt(randomNumber);
 
-
-
             if (tempList.Count <= 0)
             {
                 for (int i = 0; i < dislikeList.Count; i++)
@@ -251,8 +257,6 @@ public class MovePicture : MonoBehaviour
                 Debug.Log(dislikeList.Count);
                 Debug.Log(tempList.Count);
             }
-
-            
         }
     }
 
@@ -289,6 +293,15 @@ public class MovePicture : MonoBehaviour
     void SleepNow()
     {
         sleep = false;
+    }
+
+    private void SendPrompt()
+    {
+        if (!sent)
+        {
+            sender.sendString(promptText);
+            sent = true;
+        }
     }
 
 }

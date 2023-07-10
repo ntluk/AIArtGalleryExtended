@@ -1112,6 +1112,7 @@ GameObject:
   - component: {fileID: 412769748}
   - component: {fileID: 412769747}
   - component: {fileID: 412769746}
+  - component: {fileID: 412769751}
   m_Layer: 0
   m_Name: MoveCube
   m_TagString: Untagged
@@ -1131,11 +1132,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5d6f37dbbbb1a34ba7f28e826fd80b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BackgroundImage: {fileID: 754425583}
   Image: {fileID: 332416726}
   DislikeImage: {fileID: 1765432122}
   LikeImage: {fileID: 405119324}
-  leftHand: {fileID: 0}
   randomNumber: 0
   spriteList:
   - {fileID: 21300000, guid: 50d3cc66de396b54185be7d65d982477, type: 3}
@@ -1228,6 +1227,27 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &412769751
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 412769745}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5d6f37dbbbb1a34ba7f28e826fd80b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Image: {fileID: 332416726}
+  DislikeImage: {fileID: 1765432122}
+  LikeImage: {fileID: 405119324}
+  randomNumber: 0
+  spriteList: []
+  BackgroundImg: {fileID: 0}
+  FrontImg: {fileID: 0}
+  DislikeAnim: {fileID: 0}
+  LikeAnim: {fileID: 0}
 --- !u!1 &447669146
 GameObject:
   m_ObjectHideFlags: 0
