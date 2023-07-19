@@ -26,7 +26,7 @@ public class MovePicture : MonoBehaviour
     List<Sprite> tempList;
     List<Sprite> dislikeList;
 
-    string promptText;
+    string promptText ="";
 
     public Sprite BackgroundImg;
     public Sprite FrontImg;
@@ -38,15 +38,21 @@ public class MovePicture : MonoBehaviour
 
     bool sleep = false;
     bool isSwipe;
+    bool sent;
 
     private Rigidbody l;
+
+    private UDPSend sender = new UDPSend();
+
+
     // Start is called before the first frame update
     void Start()
     {
        
         tempList = new List<Sprite>();
         dislikeList = new List<Sprite>();
-        
+        sender.Start();
+
         for (int i = 0; i < spriteList.Count; i++)
         {
             tempList.Add(spriteList[i]);
@@ -101,9 +107,9 @@ public class MovePicture : MonoBehaviour
 
         VelVec.x = -VelVec.x / 1000f;
 
-        Debug.Log("LeftHand = " + leftHand.transform.localPosition.y);
-        Debug.Log("Ribs = " + Ribs.transform.localPosition.y);
-        Debug.Log("VelVec.x" + VelVec.x);
+        //Debug.Log("LeftHand = " + leftHand.transform.localPosition.y);
+        //Debug.Log("Ribs = " + Ribs.transform.localPosition.y);
+        //Debug.Log("VelVec.x" + VelVec.x);
         
        
 
@@ -114,7 +120,7 @@ public class MovePicture : MonoBehaviour
             VelVec.x -= vel.magnitude / 1.8f;
             test = new Vector3(VelVec.x, 0, 0);
             Dislike();
-            Debug.Log("Dislike");
+            //Debug.Log("Dislike");
         }
 
         //if (Input.GetKey("d") && this.transform.position.x < 2.5)
@@ -123,9 +129,11 @@ public class MovePicture : MonoBehaviour
             VelVec.x += vel.magnitude / 1.8f;
             test = new Vector3(VelVec.x, 0, 0);
             Like();
-            Debug.Log("Like");
+            //Debug.Log("Like");
         }
 
+        
+            
     }
 
 
@@ -159,7 +167,7 @@ public class MovePicture : MonoBehaviour
             sleep = true;
 
             Invoke("SleepNow", 1f);
-            Debug.Log(promptText);
+            //Debug.Log(promptText);
         }
     }
 
@@ -173,6 +181,7 @@ public class MovePicture : MonoBehaviour
 
         if (this.transform.position.x > 2.5)
         {
+            
             this.transform.position = new Vector3(2.5f, this.transform.position.y, this.transform.position.z);
             this.transform.eulerAngles = new Vector3(0, 0, 12.5f);
             Image.transform.position = new Vector3(this.transform.position.x, Image.transform.position.y, Image.transform.position.z);
@@ -187,7 +196,8 @@ public class MovePicture : MonoBehaviour
             LikeAnim.GetComponent<Image>().enabled = true;            
             LikeAnim.GetComponent<Animator>().Play("Like");
 
-            promptText += FrontImg.name;
+            promptText += FrontImg.name + ", ";
+            SendPrompt();
 
             ChooseImage();
             sleep = true;
@@ -201,8 +211,8 @@ public class MovePicture : MonoBehaviour
     {
         if (tempList.Count == spriteList.Count)
         {
-            Debug.Log(tempList.Count);
-            Debug.Log(spriteList.Count);
+            //Debug.Log(tempList.Count);
+            //Debug.Log(spriteList.Count);
 
             randomNumber = Random.Range(0, tempList.Count - 1);
             FrontImg = tempList[randomNumber];
@@ -212,8 +222,8 @@ public class MovePicture : MonoBehaviour
             BackgroundImg = tempList[randomNumber];
             BackgroundImage.GetComponent<Image>().sprite = BackgroundImg;
             tempList.RemoveAt(randomNumber);
-            Debug.Log(tempList.Count);
-            Debug.Log(spriteList.Count);
+            //Debug.Log(tempList.Count);
+            //Debug.Log(spriteList.Count);
 
             DislikeAnim.GetComponent<Image>().sprite = FrontImg;
             LikeAnim.GetComponent<Image>().sprite = FrontImg;
@@ -248,8 +258,8 @@ public class MovePicture : MonoBehaviour
                 dislikeList.Clear();
 
 
-                Debug.Log(dislikeList.Count);
-                Debug.Log(tempList.Count);
+                //Debug.Log(dislikeList.Count);
+                //Debug.Log(tempList.Count);
             }
 
             
@@ -269,7 +279,7 @@ public class MovePicture : MonoBehaviour
         if (tempVel > 0.15f && tempVel < 4 || tempVel < -0.15f  && tempVel > -4)
         {
             vel = new Vector3(current - previous, 0, 0);
-            Debug.Log("VelMag = " + vel.magnitude);
+            //Debug.Log("VelMag = " + vel.magnitude);
             VelVec = vel.normalized;
         }
         else
@@ -291,6 +301,13 @@ public class MovePicture : MonoBehaviour
         sleep = false;
     }
 
+    private void SendPrompt()
+    {
+        
+            sender.sendString(promptText);
+        Debug.Log("Hallo richtig hier");
+        
+    }
 }
 
 

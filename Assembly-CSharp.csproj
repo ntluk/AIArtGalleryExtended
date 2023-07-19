@@ -61,8 +61,11 @@
     <Compile Include="Assets\MotionHub PlugIn\Scripts\Streamable.cs" />
     <Compile Include="Assets\MotionHub PlugIn\Scripts\PointManager.cs" />
     <Compile Include="Assets\MotionHub PlugIn\Scripts\CameraController.cs" />
+    <Compile Include="Assets\Script\LoadImage.cs" />
     <Compile Include="Assets\Script\MovePicture.cs" />
     <Compile Include="Assets\MotionHub PlugIn\Scripts\OSC.cs" />
+    <Compile Include="Assets\Script\UDPReceive.cs" />
+    <Compile Include="Assets\Script\UDPSend.cs" />
     <Compile Include="Assets\MotionHub PlugIn\Scripts\RecorderRemoteController.cs" />
     <Compile Include="Assets\Script\Test.cs" />
     <Compile Include="Assets\MotionHub PlugIn\Scripts\Point.cs" />
