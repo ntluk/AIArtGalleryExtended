@@ -6,10 +6,26 @@ using UnityEngine.UI;
 public class MovePicture : MonoBehaviour
 {
 
+    public enum ControlMode
+    {
+        Keyboard,
+        Kinect
+    }
+
+    public enum GameMode
+    {
+        Menu,
+        Tinder,
+        Canva
+    }
+
+    public ControlMode control;
+    GameMode gameMode;
+
     // Vector3 test = new Vector3(0.01f,0,0);
     Vector3 test;
-    
-    Vector3 test2 = new Vector3(0,0,0.5f);
+
+    Vector3 test2 = new Vector3(0, 0, 0.5f);
 
     Vector3 VelVec;
     float VelVecFloat;
@@ -26,7 +42,7 @@ public class MovePicture : MonoBehaviour
     List<Sprite> tempList;
     List<Sprite> dislikeList;
 
-    string promptText ="";
+    string promptText = "";
 
     public Sprite BackgroundImg;
     public Sprite FrontImg;
@@ -48,7 +64,9 @@ public class MovePicture : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-       
+
+        gameMode = GameMode.Menu;
+
         tempList = new List<Sprite>();
         dislikeList = new List<Sprite>();
         sender.Start();
@@ -59,81 +77,93 @@ public class MovePicture : MonoBehaviour
         }
 
 
-        //Debug.Log(tempList.Count);
-        //Debug.Log(spriteList.Count);
-
         ChooseImage();
 
+        if (control == ControlMode.Kinect)
+        {
+            KinectJoints();
+        }
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
+
+        if (gameMode == GameMode.Menu || gameMode == GameMode.Tinder)
+        {
+
+
+
+            if (control == ControlMode.Kinect)
+            {
+                GameObject LeftHand = GameObject.Find("Left_Middle_Finger_Joint_01c");
+                GameObject Ribs = GameObject.Find("Left_Forearm_Joint_01");
+
+                if (LeftHand.transform.position.y > Ribs.transform.position.y)
+                {
+                    isSwipe = true;
+                }
+                else
+                {
+                    isSwipe = false;
+                }
+
+                if (LeftHand != null)
+                    leftHand.transform.position = LeftHand.transform.position;
+
+
+
+                calcVelocity();
+
+                VelVec.x = -VelVec.x / 1000f;
+
+                if (VelVec.x < 0 && this.transform.position.x >= -2.5 && sleep == false && isSwipe)
+                {
+                    VelVec.x -= vel.magnitude / 1.8f;
+                    test = new Vector3(VelVec.x, 0, 0);
+                    Dislike();
+                }
+
+
+                if (VelVec.x > 0 && this.transform.position.x < 2.5 && sleep == false && isSwipe)
+                {
+                    VelVec.x += vel.magnitude / 1.8f;
+                    test = new Vector3(VelVec.x, 0, 0);
+                    Like();
+                }
+
+            }
+
+            if (control == ControlMode.Keyboard)
+            {
+                if (Input.GetKey("a") && this.transform.position.x > -2.5)
+                {
+                    test = new Vector3(-0.05f, 0, 0);
+                    Dislike();
+                }
+
+
+                if (Input.GetKey("d") && this.transform.position.x < 2.5)
+                {
+                    test = new Vector3(+0.05f, 0, 0);
+                    Like();
+                }
+
+            }
+
+        }
+
+    }
+
+    void KinectJoints()
+    {
         leftHand = new GameObject();
 
         GameObject LeftHand = GameObject.Find("Left_Middle_Finger_Joint_01c");
         GameObject Ribs = GameObject.Find("Left_Forearm_Joint_01");
         if (LeftHand != null)
             leftHand.transform.position = LeftHand.transform.position;
-        //leftHand.AddComponent<Rigidbody>();
-        //l = leftHand.GetComponent<Rigidbody>();
-        //l.isKinematic = true;
-        //l.useGravity = true;
-        //l.mass = 0;
-       
-       
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        GameObject LeftHand = GameObject.Find("Left_Middle_Finger_Joint_01c");
-        GameObject Ribs = GameObject.Find("Left_Forearm_Joint_01");
-
-        if(LeftHand.transform.position.y > Ribs.transform.position.y)
-        {
-             isSwipe = true;
-        }
-        else
-        {
-             isSwipe = false;
-        }
-
-        if (LeftHand != null)
-            leftHand.transform.position = LeftHand.transform.position;
-        //Debug.Log(leftHand.transform.position.x);
-        //Debug.Log("---------------------------");
-        //Debug.Log(calcVelocity());
-
-        calcVelocity();
-
-        //VelVec = new Vector3 (vel, 0, 0);
-        //VelVecFloat = VelVec.magnitude;
-
-        VelVec.x = -VelVec.x / 1000f;
-
-        //Debug.Log("LeftHand = " + leftHand.transform.localPosition.y);
-        //Debug.Log("Ribs = " + Ribs.transform.localPosition.y);
-        //Debug.Log("VelVec.x" + VelVec.x);
-        
-       
-
-        //if (Input.GetKey("a") && this.transform.position.x > -2.5)
-        //if (leftHand.transform.position.x  && this.transform.position.x > -2.5)
-        if (VelVec.x < 0  && this.transform.position.x >= -2.5 && sleep == false && isSwipe)
-        {
-            VelVec.x -= vel.magnitude / 1.8f;
-            test = new Vector3(VelVec.x, 0, 0);
-            Dislike();
-            //Debug.Log("Dislike");
-        }
-
-        //if (Input.GetKey("d") && this.transform.position.x < 2.5)
-        if (VelVec.x > 0 && this.transform.position.x < 2.5 && sleep == false && isSwipe)
-        {
-            VelVec.x += vel.magnitude / 1.8f;
-            test = new Vector3(VelVec.x, 0, 0);
-            Like();
-            //Debug.Log("Like");
-        }
-
-        
-            
     }
 
 
@@ -157,7 +187,7 @@ public class MovePicture : MonoBehaviour
             Image.transform.eulerAngles = new Vector3(Image.transform.eulerAngles.x, Image.transform.eulerAngles.y, -this.transform.eulerAngles.z);
 
 
-            DislikeAnim.GetComponent<Image>().enabled = true;       
+            DislikeAnim.GetComponent<Image>().enabled = true;
             DislikeAnim.GetComponent<Animator>().Play("Dislike");
 
             dislikeList.Add(FrontImg);
@@ -181,7 +211,7 @@ public class MovePicture : MonoBehaviour
 
         if (this.transform.position.x > 2.5)
         {
-            
+
             this.transform.position = new Vector3(2.5f, this.transform.position.y, this.transform.position.z);
             this.transform.eulerAngles = new Vector3(0, 0, 12.5f);
             Image.transform.position = new Vector3(this.transform.position.x, Image.transform.position.y, Image.transform.position.z);
@@ -193,7 +223,7 @@ public class MovePicture : MonoBehaviour
             Image.transform.eulerAngles = new Vector3(Image.transform.eulerAngles.x, Image.transform.eulerAngles.y, -this.transform.eulerAngles.z);
 
 
-            LikeAnim.GetComponent<Image>().enabled = true;            
+            LikeAnim.GetComponent<Image>().enabled = true;
             LikeAnim.GetComponent<Animator>().Play("Like");
 
             promptText += FrontImg.name + ", ";
@@ -205,7 +235,7 @@ public class MovePicture : MonoBehaviour
             Debug.Log(promptText);
         }
     }
-    
+
 
     void ChooseImage()
     {
@@ -235,7 +265,7 @@ public class MovePicture : MonoBehaviour
 
             FrontImg = BackgroundImg;
             Image.GetComponent<Image>().sprite = FrontImg;
-            
+
 
             randomNumber = Random.Range(0, tempList.Count - 1);
             BackgroundImg = tempList[randomNumber];
@@ -249,7 +279,7 @@ public class MovePicture : MonoBehaviour
                 for (int i = 0; i < dislikeList.Count; i++)
                 {
                     tempList.Add(dislikeList[i]);
-                    
+
                 }
 
                 //Debug.Log(dislikeList.Count);
@@ -262,7 +292,7 @@ public class MovePicture : MonoBehaviour
                 //Debug.Log(tempList.Count);
             }
 
-            
+
         }
     }
 
@@ -276,7 +306,7 @@ public class MovePicture : MonoBehaviour
 
         float tempVel = current - previous;
         //Debug.Log(tempVel);
-        if (tempVel > 0.15f && tempVel < 4 || tempVel < -0.15f  && tempVel > -4)
+        if (tempVel > 0.15f && tempVel < 4 || tempVel < -0.15f && tempVel > -4)
         {
             vel = new Vector3(current - previous, 0, 0);
             //Debug.Log("VelMag = " + vel.magnitude);
@@ -286,7 +316,7 @@ public class MovePicture : MonoBehaviour
         {
             VelVec.x = 0;
         }
-        
+
         return VelVec.x;
     }
 
@@ -303,11 +333,10 @@ public class MovePicture : MonoBehaviour
 
     private void SendPrompt()
     {
-        
-            sender.sendString(promptText);
+
+        sender.sendString(promptText);
         Debug.Log("Hallo richtig hier");
-        
+
     }
 }
-
 
