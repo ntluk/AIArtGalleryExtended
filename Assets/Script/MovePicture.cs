@@ -37,6 +37,7 @@ public class MovePicture : MonoBehaviour
     public GameObject leftHand;
 
     public int randomNumber;
+    public int randomNumber2;
 
 
     public List<Sprite> PlaceList;
@@ -221,6 +222,7 @@ public class MovePicture : MonoBehaviour
 
     void Dislike()
     {
+        sameName = true;
         this.transform.position += test;
         this.transform.eulerAngles -= test2;
         Image.transform.position = new Vector3(this.transform.position.x, Image.transform.position.y, Image.transform.position.z);
@@ -313,6 +315,9 @@ public class MovePicture : MonoBehaviour
 
                 dislikeList.Add(FrontImg);
 
+
+                NoDuplicates(BackgroundImg);
+
                 ChooseImageDislike();
 
 
@@ -326,6 +331,7 @@ public class MovePicture : MonoBehaviour
     }
     void Like()
     {
+        sameName = true;
         this.transform.position += test;
         this.transform.eulerAngles += test2;
         Image.transform.position = new Vector3(this.transform.position.x, Image.transform.position.y, Image.transform.position.z);
@@ -357,11 +363,26 @@ public class MovePicture : MonoBehaviour
                 FrontImg = PrepareImg;
 
                 Image.GetComponent<Image>().sprite = FrontImg;
-                tempList.RemoveAt(randomNumber);
+                //tempList.RemoveAt(randomNumber);
 
+                
                 randomNumber = Random.Range(0, tempList.Count - 1);
+                
+                int counterI = 0;
+                while (FrontImg.name.Contains(testString) && tempList[randomNumber].name.Contains(testString) && counterI < 100)
+                {
+
+                    
+                    randomNumber = Random.Range(0, tempList.Count - 1);
+
+                    counterI++;
+                }
+                Debug.Log(counterI);
+
+
                 BackgroundImg = tempList[randomNumber];
                 BackgroundImage.GetComponent<Image>().sprite = BackgroundImg;
+                tempList.RemoveAt(randomNumber);
 
 
 
@@ -402,9 +423,12 @@ public class MovePicture : MonoBehaviour
 
         if (gameMode == GameMode.Tinder)
         {
-            sameName = true;
+
             if (this.transform.position.x > 2.5)
             {
+
+
+
                 likeCounter++;
                 Debug.Log(likeCounter + "likes");
                 this.transform.position = new Vector3(2.5f, this.transform.position.y, this.transform.position.z);
@@ -429,6 +453,7 @@ public class MovePicture : MonoBehaviour
                     TempString = FrontImg.name.Replace(strObject, "");
 
                     testString = strObject;
+                    Debug.Log(testString);
                     Debug.Log("Its an Object");
 
                     tempList.RemoveAll(item => ObjectList.Contains(item));
@@ -436,20 +461,22 @@ public class MovePicture : MonoBehaviour
 
                 }
 
-                if (FrontImg.name.IndexOf("_Place") > -1)
+                else if (FrontImg.name.IndexOf("_Place") > -1)
                 {
                     TempString = FrontImg.name.Replace(strPlace, "");
                     testString = strPlace;
+                    Debug.Log(testString);
                     Debug.Log("Its a Place");
                     tempList.RemoveAll(item => PlaceList.Contains(item));
                     dislikeList.RemoveAll(item => PlaceList.Contains(item));
                 }
 
 
-                if (FrontImg.name.IndexOf("_Emotion") > -1)
+                else if (FrontImg.name.IndexOf("_Emotion") > -1)
                 {
                     TempString = FrontImg.name.Replace(strEmotion, "");
                     testString = strEmotion;
+                    Debug.Log(testString);
                     Debug.Log("Its an Emotion");
 
                     tempList.RemoveAll(item => EmotionList.Contains(item));
@@ -457,10 +484,11 @@ public class MovePicture : MonoBehaviour
                 }
 
 
-                if (FrontImg.name.IndexOf("_Color") > -1)
+                else if (FrontImg.name.IndexOf("_Color") > -1)
                 {
                     TempString = FrontImg.name.Replace(strColor, "");
                     testString = strColor;
+                    Debug.Log(testString);
                     Debug.Log("Its a Color");
 
 
@@ -469,10 +497,11 @@ public class MovePicture : MonoBehaviour
                 }
 
 
-                if (FrontImg.name.IndexOf("_Artist") > -1)
+                else if (FrontImg.name.IndexOf("_Artist") > -1)
                 {
                     TempString = FrontImg.name.Replace(strArtist, "");
                     testString = strArtist;
+                    Debug.Log(testString);
                     Debug.Log("Its an Artist");
 
                     tempList.RemoveAll(item => ArtistList.Contains(item));
@@ -480,10 +509,11 @@ public class MovePicture : MonoBehaviour
                 }
 
 
-                if (FrontImg.name.IndexOf("_Atmosphere") > -1)
+                else if (FrontImg.name.IndexOf("_Atmosphere") > -1)
                 {
                     TempString = FrontImg.name.Replace(strAtmos, "");
                     testString = strAtmos;
+                    Debug.Log(testString);
                     Debug.Log("Its an Atmosphere");
 
                     tempList.RemoveAll(item => AtmosphereList.Contains(item));
@@ -497,7 +527,7 @@ public class MovePicture : MonoBehaviour
 
                 SendPrompt();
 
-
+                NoDuplicates(BackgroundImg);
 
 
                 ChooseImageLike();
@@ -546,46 +576,49 @@ public class MovePicture : MonoBehaviour
 
         randomNumber = Random.Range(0, tempList.Count - 1);
         PrepareImg = tempList[randomNumber];
+        tempList.RemoveAt(randomNumber);
 
         BackgroundImage.GetComponent<Image>().sprite = PrepareImg;
-        if (PrepareImg.name.IndexOf("_Object") > -1)
-        {
-            testString = strObject;
 
-        }
-
-        if (PrepareImg.name.IndexOf("_Place") > -1)
-        {
-            testString = strPlace;
-        }
-
-
-        if (PrepareImg.name.IndexOf("_Emotion") > -1)
-        {
-            testString = strEmotion;
-        }
-
-
-        if (PrepareImg.name.IndexOf("_Color") > -1)
-        {
-            testString = strColor;
-        }
-
-
-        if (PrepareImg.name.IndexOf("_Artist") > -1)
-        {
-            testString = strArtist;
-        }
-
-
-        if (PrepareImg.name.IndexOf("_Atmosphere") > -1)
-        {
-            testString = strAtmos;
-        }
+        NoDuplicates(PrepareImg);
 
 
     }
 
+
+    void NoDuplicates(Sprite sprite)
+    {
+        if (sprite.name.IndexOf("_Object") > -1)
+        {
+            testString = strObject;
+            Debug.Log(testString);
+        }
+        else if (sprite.name.IndexOf("_Place") > -1)
+        {
+            testString = strPlace;
+            Debug.Log(testString);
+        }
+        else if (sprite.name.IndexOf("_Emotion") > -1)
+        {
+            testString = strEmotion;
+            Debug.Log(testString);
+        }
+        else if (sprite.name.IndexOf("_Color") > -1)
+        {
+            testString = strColor;
+            Debug.Log(testString);
+        }
+        else if (sprite.name.IndexOf("_Artist") > -1)
+        {
+            testString = strArtist;
+            Debug.Log(testString);
+        }
+        else
+        {
+            testString = strAtmos;
+            Debug.Log(testString);
+        }
+    }
     void ChooseImageDislike()
     {
 
@@ -594,16 +627,30 @@ public class MovePicture : MonoBehaviour
         LikeAnim.GetComponent<Image>().sprite = FrontImg;
 
         FrontImg = BackgroundImg;
-        tempList.RemoveAt(randomNumber);
+
         Image.GetComponent<Image>().sprite = FrontImg;
 
 
         randomNumber = Random.Range(0, tempList.Count - 1);
+        
+        int counterI = 0;
+        while (FrontImg.name.Contains(testString) && tempList[randomNumber].name.Contains(testString) && counterI < 100)
+        {
+
+            
+            randomNumber = Random.Range(0, tempList.Count - 1);
+
+            counterI++;
+        }
+        Debug.Log(counterI);
+
+
         BackgroundImg = tempList[randomNumber];
         BackgroundImage.GetComponent<Image>().sprite = BackgroundImg;
+        tempList.RemoveAt(randomNumber);
 
 
-        if (tempList.Count <= 1)
+        if (tempList.Count < 1)
         {
             addDislikeList();
         }
@@ -617,29 +664,30 @@ public class MovePicture : MonoBehaviour
         LikeAnim.GetComponent<Image>().sprite = FrontImg;
 
         FrontImg = BackgroundImg;
-        //tempList.RemoveAt(randomNumber);
         Image.GetComponent<Image>().sprite = FrontImg;
 
         randomNumber = Random.Range(0, tempList.Count - 1);
-        /*while (sameName)
+        
+        int counterI = 0;
+        while (FrontImg.name.Contains(testString) && tempList[randomNumber].name.Contains(testString) && counterI < 100)
         {
-            if (FrontImg.name.Contains(testString) && tempList[randomNumber].name.Contains(testString))
-            {
-                randomNumber = Random.Range(0, tempList.Count - 1);
-            }
-            else
-            {
-                sameName = false;
-            }
+            randomNumber = Random.Range(0, tempList.Count - 1);
 
-            Debug.Log("Hello");
-        }*/
+            counterI++;
+        }
+        Debug.Log(counterI);
+
+
+
+
+
 
         BackgroundImg = tempList[randomNumber];
         BackgroundImage.GetComponent<Image>().sprite = BackgroundImg;
+        //tempList.RemoveAt(randomNumber);
 
 
-        if (tempList.Count <= 1)
+        if (tempList.Count < 1)
         {
             addDislikeList();
         }
