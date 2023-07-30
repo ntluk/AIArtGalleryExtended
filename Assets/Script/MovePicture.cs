@@ -46,8 +46,10 @@ public class MovePicture : MonoBehaviour
 
     public Sprite BackgroundImg;
     public Sprite FrontImg;
-
+    Sprite PrepareImg;
     public Sprite MenuImg;
+
+    Sprite DisPrepareImg;
 
     public GameObject DislikeAnim;
     public GameObject LikeAnim;
@@ -69,17 +71,14 @@ public class MovePicture : MonoBehaviour
 
         gameMode = GameMode.Menu;
 
-        
+
         Image.GetComponent<Image>().sprite = MenuImg;
+        FrontImg = MenuImg;
 
-        tempList = new List<Sprite>();
-        dislikeList = new List<Sprite>();
-        sender.Start();
-
-        for (int i = 0; i < spriteList.Count; i++)
-        {
-            tempList.Add(spriteList[i]);
-        }
+        prepareTinder();
+        Debug.Log(tempList.Count);
+        Debug.Log(spriteList.Count);
+        Debug.Log(dislikeList.Count);
 
 
         //ChooseImage();
@@ -94,7 +93,7 @@ public class MovePicture : MonoBehaviour
     void Update()
     {
 
-Debug.Log(gameMode);
+
         if (gameMode == GameMode.Menu || gameMode == GameMode.Tinder)
         {
 
@@ -182,6 +181,7 @@ Debug.Log(gameMode);
 
     }
 
+
     void KinectJoints()
     {
         leftHand = new GameObject();
@@ -190,6 +190,10 @@ Debug.Log(gameMode);
         GameObject Ribs = GameObject.Find("Left_Forearm_Joint_01");
         if (LeftHand != null)
             leftHand.transform.position = LeftHand.transform.position;
+
+
+
+
     }
 
 
@@ -214,9 +218,19 @@ Debug.Log(gameMode);
                 Image.transform.position = new Vector3(this.transform.position.x, Image.transform.position.y, Image.transform.position.z);
                 Image.transform.eulerAngles = new Vector3(Image.transform.eulerAngles.x, Image.transform.eulerAngles.y, -this.transform.eulerAngles.z);
 
-                
+
                 gameMode = GameMode.Canva;
                 Image.GetComponent<Image>().sprite = spriteList[0];
+
+
+                DislikeAnim.GetComponent<Image>().enabled = true;
+                DislikeAnim.GetComponent<Animator>().Play("Dislike");
+                DislikeAnim.GetComponent<Image>().sprite = FrontImg;
+
+                FrontImg = spriteList[0];
+
+
+
 
             }
 
@@ -240,6 +254,14 @@ Debug.Log(gameMode);
 
                 gameMode = GameMode.Menu;
                 Image.GetComponent<Image>().sprite = MenuImg;
+
+
+
+                DislikeAnim.GetComponent<Image>().enabled = true;
+                DislikeAnim.GetComponent<Animator>().Play("Dislike");
+                DislikeAnim.GetComponent<Image>().sprite = FrontImg;
+
+                FrontImg = MenuImg;
             }
         }
 
@@ -247,6 +269,12 @@ Debug.Log(gameMode);
         {
             if (this.transform.position.x < -2.5)
             {
+
+
+
+
+
+
                 this.transform.position = new Vector3(-2.5f, this.transform.position.y, this.transform.position.z);
                 this.transform.eulerAngles = new Vector3(0, 0, -12.5f);
                 Image.transform.position = new Vector3(this.transform.position.x, Image.transform.position.y, Image.transform.position.z);
@@ -265,10 +293,16 @@ Debug.Log(gameMode);
 
                 ChooseImage();
 
+
+
                 sleep = true;
 
                 Invoke("SleepNow", 1f);
                 //Debug.Log(promptText);
+
+                Debug.Log(tempList.Count);
+
+                Debug.Log(dislikeList.Count);
             }
         }
     }
@@ -294,7 +328,27 @@ Debug.Log(gameMode);
                 Image.transform.eulerAngles = new Vector3(Image.transform.eulerAngles.x, Image.transform.eulerAngles.y, -this.transform.eulerAngles.z);
 
                 gameMode = GameMode.Tinder;
-                Image.GetComponent<Image>().sprite = spriteList[1];
+                Image.GetComponent<Image>().sprite = PrepareImg;
+
+
+                LikeAnim.GetComponent<Image>().enabled = true;
+                LikeAnim.GetComponent<Animator>().Play("Like");
+
+                LikeAnim.GetComponent<Image>().sprite = FrontImg;
+
+                FrontImg = PrepareImg;
+
+                Image.GetComponent<Image>().sprite = FrontImg;
+                tempList.RemoveAt(randomNumber);
+
+                randomNumber = Random.Range(0, tempList.Count - 1);
+                BackgroundImg = tempList[randomNumber];
+                BackgroundImage.GetComponent<Image>().sprite = BackgroundImg;
+
+
+                Debug.Log(tempList.Count);
+
+                Debug.Log(dislikeList.Count);
             }
 
 
@@ -306,6 +360,7 @@ Debug.Log(gameMode);
         {
             if (this.transform.position.x > 2.5)
             {
+
                 this.transform.position = new Vector3(2.5f, this.transform.position.y, this.transform.position.z);
                 this.transform.eulerAngles = new Vector3(0, 0, 12.5f);
                 Image.transform.position = new Vector3(this.transform.position.x, Image.transform.position.y, Image.transform.position.z);
@@ -318,9 +373,17 @@ Debug.Log(gameMode);
 
                 gameMode = GameMode.Menu;
                 Image.GetComponent<Image>().sprite = MenuImg;
+
+
+                LikeAnim.GetComponent<Image>().enabled = true;
+                LikeAnim.GetComponent<Animator>().Play("Like");
+
+                LikeAnim.GetComponent<Image>().sprite = FrontImg;
+
+                FrontImg = MenuImg;
             }
         }
-            
+
         if (gameMode == GameMode.Tinder)
         {
             if (this.transform.position.x > 2.5)
@@ -343,90 +406,96 @@ Debug.Log(gameMode);
                 promptText += FrontImg.name + ", ";
                 SendPrompt();
 
+
+
+
                 ChooseImage();
+
+
+
                 sleep = true;
                 Invoke("SleepNow", 1f);
                 Debug.Log(promptText);
+
+
+                Debug.Log(tempList.Count);
+
+                Debug.Log(dislikeList.Count);
             }
         }
 
-    
+
     }
 
+    void prepareTinder()
+    {
+        tempList = new List<Sprite>();
+        dislikeList = new List<Sprite>();
+        sender.Start();
+
+        for (int i = 0; i < spriteList.Count; i++)
+        {
+            tempList.Add(spriteList[i]);
+        }
+
+        randomNumber = Random.Range(0, tempList.Count - 1);
+        PrepareImg = tempList[randomNumber];
+
+        BackgroundImage.GetComponent<Image>().sprite = PrepareImg;
+
+
+    }
 
     void ChooseImage()
     {
-        if (tempList.Count == spriteList.Count)
+
+
+        DislikeAnim.GetComponent<Image>().sprite = FrontImg;
+        LikeAnim.GetComponent<Image>().sprite = FrontImg;
+
+        FrontImg = BackgroundImg;
+        tempList.RemoveAt(randomNumber);
+        Image.GetComponent<Image>().sprite = FrontImg;
+
+
+        randomNumber = Random.Range(0, tempList.Count - 1);
+        BackgroundImg = tempList[randomNumber];
+        BackgroundImage.GetComponent<Image>().sprite = BackgroundImg;
+
+
+        if (tempList.Count <= 1)
         {
-            //Debug.Log(tempList.Count);
-            //Debug.Log(spriteList.Count);
-
-            randomNumber = Random.Range(0, tempList.Count - 1);
-            FrontImg = tempList[randomNumber];
-            Image.GetComponent<Image>().sprite = FrontImg;
-            tempList.RemoveAt(randomNumber);
-            randomNumber = Random.Range(0, tempList.Count - 1);
-            BackgroundImg = tempList[randomNumber];
-            BackgroundImage.GetComponent<Image>().sprite = BackgroundImg;
-            tempList.RemoveAt(randomNumber);
-            //Debug.Log(tempList.Count);
-            //Debug.Log(spriteList.Count);
-
-            DislikeAnim.GetComponent<Image>().sprite = FrontImg;
-            LikeAnim.GetComponent<Image>().sprite = FrontImg;
+            addDislikeList();
         }
-        else
-        {
-            DislikeAnim.GetComponent<Image>().sprite = FrontImg;
-            LikeAnim.GetComponent<Image>().sprite = FrontImg;
+    }
 
-            FrontImg = BackgroundImg;
-            Image.GetComponent<Image>().sprite = FrontImg;
-
-
-            randomNumber = Random.Range(0, tempList.Count - 1);
-            BackgroundImg = tempList[randomNumber];
-            BackgroundImage.GetComponent<Image>().sprite = BackgroundImg;
-            tempList.RemoveAt(randomNumber);
-
-
-
-            if (tempList.Count <= 0)
+    void addDislikeList()
+    {
+        
+            for (int i = 0; i < dislikeList.Count; i++)
             {
-                for (int i = 0; i < dislikeList.Count; i++)
-                {
-                    tempList.Add(dislikeList[i]);
+                tempList.Add(dislikeList[i]);
 
-                }
-
-                //Debug.Log(dislikeList.Count);
-                //Debug.Log(tempList.Count);
-
-                dislikeList.Clear();
-
-
-                //Debug.Log(dislikeList.Count);
-                //Debug.Log(tempList.Count);
             }
 
+            dislikeList.Clear();
+            Debug.Log("Clear" + dislikeList.Count);
 
-        }
+        
     }
 
     float calcVelocity()
     {
         float previous = leftHand.transform.position.x;
-        //StartCoroutine("waitol", 1);
+
         Invoke("waitol", 0.000000001f);
-        //Debug.Log("previous: " + previous);
-        //Debug.Log("current: " + current);
+
 
         float tempVel = current - previous;
-        //Debug.Log(tempVel);
+
         if (tempVel > 0.15f && tempVel < 4 || tempVel < -0.15f && tempVel > -4)
         {
             vel = new Vector3(current - previous, 0, 0);
-            //Debug.Log("VelMag = " + vel.magnitude);
             VelVec = vel.normalized;
         }
         else
@@ -450,10 +519,7 @@ Debug.Log(gameMode);
 
     private void SendPrompt()
     {
-
         sender.sendString(promptText);
-        Debug.Log("Hallo richtig hier");
-
     }
 }
 
