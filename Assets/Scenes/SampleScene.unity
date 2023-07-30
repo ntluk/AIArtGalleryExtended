@@ -461,17 +461,53 @@ MonoBehaviour:
   LikeImage: {fileID: 405119324}
   leftHand: {fileID: 0}
   randomNumber: 0
-  spriteList:
-  - {fileID: 21300000, guid: 50d3cc66de396b54185be7d65d982477, type: 3}
-  - {fileID: 21300000, guid: edb87d565dd6bcf489f39e232ee910b1, type: 3}
-  - {fileID: 21300000, guid: 67b211ab33240fc42b344a9fa179461b, type: 3}
-  - {fileID: 21300000, guid: 68168b1198402df419823fca0866a3bc, type: 3}
-  - {fileID: 21300000, guid: ade80473cc5f047409e2bfc4fd830f0c, type: 3}
-  - {fileID: 21300000, guid: aa376bfdad105554cafe190252bed6dc, type: 3}
-  - {fileID: 21300000, guid: f2d7015e32674f948b4f601b467c2ef8, type: 3}
-  - {fileID: 21300000, guid: f6a183e572baa204fa3fcbb74e888cd4, type: 3}
-  - {fileID: 21300000, guid: fbe10aa9170fba1419fb7490c44f90c9, type: 3}
-  - {fileID: 21300000, guid: 985ef3a7e927fb44984174a01bdd0c96, type: 3}
+  PlaceList:
+  - {fileID: 21300000, guid: 0b7d6b4e5084dc540bf02f50db50332d, type: 3}
+  - {fileID: 21300000, guid: 2bab1c6c352b0b14282d4c632a494bc5, type: 3}
+  - {fileID: 21300000, guid: 0230af9b224650448aeecbed7b492b04, type: 3}
+  - {fileID: 21300000, guid: 925da8eed91f3374eae8d36071b5e4a6, type: 3}
+  - {fileID: 21300000, guid: dd0735c5bea8109499356ca232d05fd4, type: 3}
+  - {fileID: 21300000, guid: c1f1a61ec74dcc945a42ae338b35fd42, type: 3}
+  - {fileID: 21300000, guid: 97e3bf269a1f62e4db3c473f285a4cbb, type: 3}
+  - {fileID: 21300000, guid: f2a4b89e53811744aa751c2875678b8b, type: 3}
+  - {fileID: 21300000, guid: f5ed1311fc3b6c549b03d879e4280386, type: 3}
+  - {fileID: 21300000, guid: 6343987c36c8fb34db131d150851e8ed, type: 3}
+  - {fileID: 21300000, guid: ad87e3836971bba4cbac6f89af67bbf9, type: 3}
+  - {fileID: 21300000, guid: eba68ce9359b53c44af14ad0dfe59908, type: 3}
+  ObjectList:
+  - {fileID: 21300000, guid: a5ae4e8c7ead6c4419a2cfec26cde2e1, type: 3}
+  - {fileID: 21300000, guid: dad4fa74f15c08c40b0d21ecb8209043, type: 3}
+  - {fileID: 21300000, guid: 1a7905a0179bcce469113e8e2c3078d2, type: 3}
+  - {fileID: 21300000, guid: 9078e2b90bcdb4d4f9a46ac38244b060, type: 3}
+  - {fileID: 21300000, guid: cc1f46ebdda4f03429aad5fb97ef18fc, type: 3}
+  - {fileID: 21300000, guid: 922e089a7ceede24e844b900478dad51, type: 3}
+  - {fileID: 21300000, guid: 1cfdbc18fe2b5ea41b24ec87075dd5df, type: 3}
+  - {fileID: 21300000, guid: 06ebb2a5d63429b41b7b519a3ef7180f, type: 3}
+  - {fileID: 21300000, guid: 369bd2a01519c984399f4c6790a88429, type: 3}
+  - {fileID: 21300000, guid: d2275694777615d40975f97b47a4296e, type: 3}
+  - {fileID: 21300000, guid: 683b529ae18187942a3fc709a57414bd, type: 3}
+  - {fileID: 21300000, guid: e7e7f5319b50a6643b42a71eb33c351a, type: 3}
+  ArtistList:
+  - {fileID: 21300000, guid: 67ee7deed5b3f77419899ba7663a2c7c, type: 3}
+  ColorList:
+  - {fileID: 21300000, guid: 727e1b93f118b3f42b177e71cd477d7c, type: 3}
+  - {fileID: 21300000, guid: 7ae3d6e048bfa9042b7122a42253b3b6, type: 3}
+  - {fileID: 21300000, guid: 401997a4193f23a44a459860b3269fa4, type: 3}
+  - {fileID: 21300000, guid: 3e2cb137dd8cb7d42a959c40dd27ee64, type: 3}
+  - {fileID: 21300000, guid: e7d947dc6bed04f499dc275968a8331b, type: 3}
+  - {fileID: 21300000, guid: bdae59d12498c6c4c914cee42d09ee73, type: 3}
+  - {fileID: 21300000, guid: 3ab5b6a2ae94d444c8d2388670783111, type: 3}
+  - {fileID: 21300000, guid: 909bf2b741320a447828332e07563bf6, type: 3}
+  - {fileID: 21300000, guid: 579b09bb9141215429f6459946caec56, type: 3}
+  - {fileID: 21300000, guid: a771af710c5fd034bbc7e4c499b58182, type: 3}
+  EmotionList:
+  - {fileID: 21300000, guid: 5fae2628d5bdbb64ab3571b8925f02a0, type: 3}
+  - {fileID: 21300000, guid: 113fddbf08ed1aa45bb0326c0119bbe5, type: 3}
+  - {fileID: 21300000, guid: cf310798cc1f71e49ae190eabedb7e3a, type: 3}
+  - {fileID: 21300000, guid: 2740431f755e5254c8be20fcff71ade2, type: 3}
+  AtmosphereList: []
+  tempList: []
+  dislikeList: []
   BackgroundImg: {fileID: 0}
   FrontImg: {fileID: 0}
   MenuImg: {fileID: 21300000, guid: c37a8db2c74b3774b8438e881d1fa220, type: 3}
