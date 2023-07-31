@@ -549,8 +549,6 @@ public class MovePicture : MonoBehaviour
 
             }
         }
-
-
     }
 
     void prepareTinder()
@@ -592,47 +590,83 @@ public class MovePicture : MonoBehaviour
         BackgroundImage.GetComponent<Image>().sprite = PrepareImg;
 
         NoDuplicates(PrepareImg);
-
-
     }
 
 
     void NoDuplicates(Sprite sprite)
     {
+        randomNumber = Random.Range(0, tempList.Count - 1);
+        int counterI = 0;
+
         if (sprite.name.IndexOf("_Object") > -1)
         {
             testString = strObject;
             Debug.Log(testString);
+            while (BackgroundImage.GetComponent<Image>().sprite.name.IndexOf("_Object") > -1 && likeCounter < 6 && tempList.Count >= 1 && counterI < 20)
+            {
+                BackgroundImage.GetComponent<Image>().sprite = tempList[randomNumber];
+                counterI++;
+            }
         }
         else if (sprite.name.IndexOf("_Place") > -1)
         {
             testString = strPlace;
             Debug.Log(testString);
+            while (BackgroundImage.GetComponent<Image>().sprite.name.IndexOf("_Place") > -1 && likeCounter < 6 && tempList.Count >= 1 && counterI < 20)
+            {
+                BackgroundImage.GetComponent<Image>().sprite = tempList[randomNumber];
+                counterI++;
+            }
         }
         else if (sprite.name.IndexOf("_Emotion") > -1)
         {
             testString = strEmotion;
             Debug.Log(testString);
+            while (BackgroundImage.GetComponent<Image>().sprite.name.IndexOf("_Emotion") > -1 && likeCounter < 6 && tempList.Count >= 1 && counterI < 20)
+            {
+                BackgroundImage.GetComponent<Image>().sprite = tempList[randomNumber];
+                counterI++;
+            }
         }
         else if (sprite.name.IndexOf("_Color") > -1)
         {
             testString = strColor;
             Debug.Log(testString);
+            while (BackgroundImage.GetComponent<Image>().sprite.name.IndexOf("_Color") > -1 && likeCounter < 6 && tempList.Count >= 1 && counterI < 20)
+            {
+                BackgroundImage.GetComponent<Image>().sprite = tempList[randomNumber];
+                counterI++;
+            }
         }
         else if (sprite.name.IndexOf("_Artist") > -1)
         {
             testString = strArtist;
             Debug.Log(testString);
+            while (BackgroundImage.GetComponent<Image>().sprite.name.IndexOf("_Artist") > -1 && likeCounter < 6 && tempList.Count >= 1 && counterI < 20)
+            {
+                BackgroundImage.GetComponent<Image>().sprite = tempList[randomNumber];
+                counterI++;
+            }
         }
         else
         {
             testString = strAtmos;
             Debug.Log(testString);
+            while (BackgroundImage.GetComponent<Image>().sprite.name.IndexOf("_Atmosphere") > -1 && likeCounter < 6 && tempList.Count >= 1 && counterI < 20)
+            {
+                BackgroundImage.GetComponent<Image>().sprite = tempList[randomNumber];
+                counterI++;
+            }
         }
     }
+
     void ChooseImageDislike()
     {
 
+        if (tempList.Count <= 1)
+        {
+            addDislikeList();
+        }
 
         DislikeAnim.GetComponent<Image>().sprite = FrontImg;
         LikeAnim.GetComponent<Image>().sprite = FrontImg;
@@ -645,10 +679,8 @@ public class MovePicture : MonoBehaviour
         randomNumber = Random.Range(0, tempList.Count - 1);
 
         int counterI = 0;
-        while (FrontImg.name.Contains(testString) && tempList[randomNumber].name.Contains(testString) && counterI < 100)
+        while (FrontImg.name.Contains(testString) && tempList[randomNumber].name.Contains(testString) && counterI < 200)
         {
-
-
             randomNumber = Random.Range(0, tempList.Count - 1);
 
             counterI++;
@@ -659,17 +691,15 @@ public class MovePicture : MonoBehaviour
         BackgroundImg = tempList[randomNumber];
         BackgroundImage.GetComponent<Image>().sprite = BackgroundImg;
         tempList.RemoveAt(randomNumber);
-
-
-        if (tempList.Count < 1)
-        {
-            addDislikeList();
-        }
     }
 
     void ChooseImageLike()
     {
 
+        if (tempList.Count <= 1)
+        {
+            addDislikeList();
+        }
 
         DislikeAnim.GetComponent<Image>().sprite = FrontImg;
         LikeAnim.GetComponent<Image>().sprite = FrontImg;
@@ -680,7 +710,7 @@ public class MovePicture : MonoBehaviour
         randomNumber = Random.Range(0, tempList.Count - 1);
 
         int counterI = 0;
-        while (FrontImg.name.Contains(testString) && tempList[randomNumber].name.Contains(testString) && counterI < 100)
+        while (FrontImg.name.Contains(testString) && tempList[randomNumber].name.Contains(testString) && counterI < 200)
         {
             randomNumber = Random.Range(0, tempList.Count - 1);
 
@@ -689,25 +719,13 @@ public class MovePicture : MonoBehaviour
         Debug.Log(counterI);
 
 
-
-
-
-
         BackgroundImg = tempList[randomNumber];
         BackgroundImage.GetComponent<Image>().sprite = BackgroundImg;
         //tempList.RemoveAt(randomNumber);
-
-
-        if (tempList.Count < 1)
-        {
-            addDislikeList();
-        }
     }
 
     void addDislikeList()
     {
-
-
         tempList = new List<Sprite>();
 
         for (int i = 0; i < dislikeList.Count; i++)
@@ -718,8 +736,6 @@ public class MovePicture : MonoBehaviour
         }
 
         dislikeList.Clear();
-
-
 
     }
 
