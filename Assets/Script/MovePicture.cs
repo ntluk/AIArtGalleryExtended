@@ -115,7 +115,14 @@ public class MovePicture : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        if (likeCounter == 5)
+        {
+            Image.GetComponent<Image>().sprite = MenuImg;
+            FrontImg = MenuImg;
+            gameMode = GameMode.Menu;
+            prepareTinder();
+            likeCounter = 0;
+        }
 
         if (gameMode == GameMode.Menu || gameMode == GameMode.Tinder)
         {
@@ -365,14 +372,14 @@ public class MovePicture : MonoBehaviour
                 Image.GetComponent<Image>().sprite = FrontImg;
                 //tempList.RemoveAt(randomNumber);
 
-                
+
                 randomNumber = Random.Range(0, tempList.Count - 1);
-                
+
                 int counterI = 0;
                 while (FrontImg.name.Contains(testString) && tempList[randomNumber].name.Contains(testString) && counterI < 100)
                 {
 
-                    
+
                     randomNumber = Random.Range(0, tempList.Count - 1);
 
                     counterI++;
@@ -430,6 +437,9 @@ public class MovePicture : MonoBehaviour
 
 
                 likeCounter++;
+
+
+
                 Debug.Log(likeCounter + "likes");
                 this.transform.position = new Vector3(2.5f, this.transform.position.y, this.transform.position.z);
                 this.transform.eulerAngles = new Vector3(0, 0, 12.5f);
@@ -547,6 +557,7 @@ public class MovePicture : MonoBehaviour
     {
         tempList = new List<Sprite>();
         dislikeList = new List<Sprite>();
+        BackgroundImg = null;
         sender.Start();
 
         for (int i = 0; i < ColorList.Count; i++)
@@ -632,12 +643,12 @@ public class MovePicture : MonoBehaviour
 
 
         randomNumber = Random.Range(0, tempList.Count - 1);
-        
+
         int counterI = 0;
         while (FrontImg.name.Contains(testString) && tempList[randomNumber].name.Contains(testString) && counterI < 100)
         {
 
-            
+
             randomNumber = Random.Range(0, tempList.Count - 1);
 
             counterI++;
@@ -667,7 +678,7 @@ public class MovePicture : MonoBehaviour
         Image.GetComponent<Image>().sprite = FrontImg;
 
         randomNumber = Random.Range(0, tempList.Count - 1);
-        
+
         int counterI = 0;
         while (FrontImg.name.Contains(testString) && tempList[randomNumber].name.Contains(testString) && counterI < 100)
         {
