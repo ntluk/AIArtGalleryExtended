@@ -115,7 +115,7 @@ public class MovePicture : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (likeCounter == 5)
+        if (likeCounter == 6)
         {
             Image.GetComponent<Image>().sprite = MenuImg;
             FrontImg = MenuImg;
