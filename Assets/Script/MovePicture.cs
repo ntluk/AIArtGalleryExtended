@@ -602,60 +602,78 @@ public class MovePicture : MonoBehaviour
         {
             testString = strObject;
             Debug.Log(testString);
+            if (sprite != PrepareImg)
+            {
             while (BackgroundImage.GetComponent<Image>().sprite.name.IndexOf("_Object") > -1 && likeCounter < 6 && tempList.Count >= 1 && counterI < 20)
             {
                 BackgroundImage.GetComponent<Image>().sprite = tempList[randomNumber];
                 counterI++;
+            }
             }
         }
         else if (sprite.name.IndexOf("_Place") > -1)
         {
             testString = strPlace;
             Debug.Log(testString);
+            if (sprite != PrepareImg)
+            {
             while (BackgroundImage.GetComponent<Image>().sprite.name.IndexOf("_Place") > -1 && likeCounter < 6 && tempList.Count >= 1 && counterI < 20)
             {
                 BackgroundImage.GetComponent<Image>().sprite = tempList[randomNumber];
                 counterI++;
+            }
             }
         }
         else if (sprite.name.IndexOf("_Emotion") > -1)
         {
             testString = strEmotion;
             Debug.Log(testString);
+            if (sprite != PrepareImg)
+            {
             while (BackgroundImage.GetComponent<Image>().sprite.name.IndexOf("_Emotion") > -1 && likeCounter < 6 && tempList.Count >= 1 && counterI < 20)
             {
                 BackgroundImage.GetComponent<Image>().sprite = tempList[randomNumber];
                 counterI++;
+            }
             }
         }
         else if (sprite.name.IndexOf("_Color") > -1)
         {
             testString = strColor;
             Debug.Log(testString);
+            if (sprite != PrepareImg)
+            {
             while (BackgroundImage.GetComponent<Image>().sprite.name.IndexOf("_Color") > -1 && likeCounter < 6 && tempList.Count >= 1 && counterI < 20)
             {
                 BackgroundImage.GetComponent<Image>().sprite = tempList[randomNumber];
                 counterI++;
+            }
             }
         }
         else if (sprite.name.IndexOf("_Artist") > -1)
         {
             testString = strArtist;
             Debug.Log(testString);
+            if (sprite != PrepareImg)
+            {
             while (BackgroundImage.GetComponent<Image>().sprite.name.IndexOf("_Artist") > -1 && likeCounter < 6 && tempList.Count >= 1 && counterI < 20)
             {
                 BackgroundImage.GetComponent<Image>().sprite = tempList[randomNumber];
                 counterI++;
+            }
             }
         }
         else
         {
             testString = strAtmos;
             Debug.Log(testString);
+            if (sprite != PrepareImg)
+            {
             while (BackgroundImage.GetComponent<Image>().sprite.name.IndexOf("_Atmosphere") > -1 && likeCounter < 6 && tempList.Count >= 1 && counterI < 20)
             {
                 BackgroundImage.GetComponent<Image>().sprite = tempList[randomNumber];
                 counterI++;
+            }
             }
         }
     }
@@ -663,7 +681,7 @@ public class MovePicture : MonoBehaviour
     void ChooseImageDislike()
     {
 
-        if (tempList.Count <= 1)
+        if (tempList.Count < 1)
         {
             addDislikeList();
         }
@@ -696,7 +714,7 @@ public class MovePicture : MonoBehaviour
     void ChooseImageLike()
     {
 
-        if (tempList.Count <= 1)
+        if (tempList.Count < 1)
         {
             addDislikeList();
         }
