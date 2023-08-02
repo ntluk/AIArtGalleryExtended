@@ -237,8 +237,17 @@ public class MovePicture : MonoBehaviour
         Image.transform.position = new Vector3(this.transform.position.x, Image.transform.position.y, Image.transform.position.z);
         Image.transform.eulerAngles = new Vector3(Image.transform.eulerAngles.x, Image.transform.eulerAngles.y, -this.transform.eulerAngles.z);
 
+
+
         if (gameMode == GameMode.Menu)
         {
+
+            if (this.transform.position.x < 0)
+            {
+                BackgroundImage.GetComponent<Image>().sprite = CanvaImg;
+            }
+
+
             if (this.transform.position.x < -2.5)
             {
                 this.transform.position = new Vector3(-2.5f, this.transform.position.y, this.transform.position.z);
@@ -253,14 +262,14 @@ public class MovePicture : MonoBehaviour
 
 
                 gameMode = GameMode.Canva;
-                Image.GetComponent<Image>().sprite = ObjectList[0];
+                Image.GetComponent<Image>().sprite = CanvaImg;
 
 
                 DislikeAnim.GetComponent<Image>().enabled = true;
                 DislikeAnim.GetComponent<Animator>().Play("Dislike");
                 DislikeAnim.GetComponent<Image>().sprite = FrontImg;
 
-                FrontImg = ObjectList[0];
+                FrontImg = CanvaImg;
 
 
 
@@ -273,6 +282,12 @@ public class MovePicture : MonoBehaviour
 
         if (gameMode == GameMode.Canva)
         {
+
+            if (this.transform.position.x > 0)
+                {
+                    BackgroundImage.GetComponent<Image>().sprite = CanvaImg;
+                }
+
             if (this.transform.position.x < -2.5)
             {
                 this.transform.position = new Vector3(-2.5f, this.transform.position.y, this.transform.position.z);
@@ -348,8 +363,17 @@ public class MovePicture : MonoBehaviour
 
         if (gameMode == GameMode.Menu)
         {
+
+            if (this.transform.position.x > 0)
+                {
+                    BackgroundImage.GetComponent<Image>().sprite = PrepareImg;
+                }
+
+
             if (this.transform.position.x > 2.5)
             {
+
+                
                 this.transform.position = new Vector3(2.5f, this.transform.position.y, this.transform.position.z);
                 this.transform.eulerAngles = new Vector3(0, 0, 12.5f);
                 Image.transform.position = new Vector3(this.transform.position.x, Image.transform.position.y, Image.transform.position.z);
@@ -404,6 +428,13 @@ public class MovePicture : MonoBehaviour
 
         if (gameMode == GameMode.Canva)
         {
+
+            if (this.transform.position.x > 0)
+                {
+                    BackgroundImage.GetComponent<Image>().sprite = MenuImg;
+                }
+
+
             if (this.transform.position.x > 2.5)
             {
 
@@ -606,11 +637,11 @@ public class MovePicture : MonoBehaviour
             Debug.Log(testString);
             if (sprite != PrepareImg)
             {
-            while (BackgroundImage.GetComponent<Image>().sprite.name.IndexOf("_Object") > -1 && likeCounter < 6 && tempList.Count >= 1 && counterI < 20)
-            {
-                BackgroundImage.GetComponent<Image>().sprite = tempList[randomNumber];
-                counterI++;
-            }
+                while (BackgroundImage.GetComponent<Image>().sprite.name.IndexOf("_Object") > -1 && likeCounter < 6 && tempList.Count >= 1 && counterI < 20)
+                {
+                    BackgroundImage.GetComponent<Image>().sprite = tempList[randomNumber];
+                    counterI++;
+                }
             }
         }
         else if (sprite.name.IndexOf("_Place") > -1)
@@ -619,11 +650,11 @@ public class MovePicture : MonoBehaviour
             Debug.Log(testString);
             if (sprite != PrepareImg)
             {
-            while (BackgroundImage.GetComponent<Image>().sprite.name.IndexOf("_Place") > -1 && likeCounter < 6 && tempList.Count >= 1 && counterI < 20)
-            {
-                BackgroundImage.GetComponent<Image>().sprite = tempList[randomNumber];
-                counterI++;
-            }
+                while (BackgroundImage.GetComponent<Image>().sprite.name.IndexOf("_Place") > -1 && likeCounter < 6 && tempList.Count >= 1 && counterI < 20)
+                {
+                    BackgroundImage.GetComponent<Image>().sprite = tempList[randomNumber];
+                    counterI++;
+                }
             }
         }
         else if (sprite.name.IndexOf("_Emotion") > -1)
@@ -632,11 +663,11 @@ public class MovePicture : MonoBehaviour
             Debug.Log(testString);
             if (sprite != PrepareImg)
             {
-            while (BackgroundImage.GetComponent<Image>().sprite.name.IndexOf("_Emotion") > -1 && likeCounter < 6 && tempList.Count >= 1 && counterI < 20)
-            {
-                BackgroundImage.GetComponent<Image>().sprite = tempList[randomNumber];
-                counterI++;
-            }
+                while (BackgroundImage.GetComponent<Image>().sprite.name.IndexOf("_Emotion") > -1 && likeCounter < 6 && tempList.Count >= 1 && counterI < 20)
+                {
+                    BackgroundImage.GetComponent<Image>().sprite = tempList[randomNumber];
+                    counterI++;
+                }
             }
         }
         else if (sprite.name.IndexOf("_Color") > -1)
@@ -645,11 +676,11 @@ public class MovePicture : MonoBehaviour
             Debug.Log(testString);
             if (sprite != PrepareImg)
             {
-            while (BackgroundImage.GetComponent<Image>().sprite.name.IndexOf("_Color") > -1 && likeCounter < 6 && tempList.Count >= 1 && counterI < 20)
-            {
-                BackgroundImage.GetComponent<Image>().sprite = tempList[randomNumber];
-                counterI++;
-            }
+                while (BackgroundImage.GetComponent<Image>().sprite.name.IndexOf("_Color") > -1 && likeCounter < 6 && tempList.Count >= 1 && counterI < 20)
+                {
+                    BackgroundImage.GetComponent<Image>().sprite = tempList[randomNumber];
+                    counterI++;
+                }
             }
         }
         else if (sprite.name.IndexOf("_Artist") > -1)
@@ -658,11 +689,11 @@ public class MovePicture : MonoBehaviour
             Debug.Log(testString);
             if (sprite != PrepareImg)
             {
-            while (BackgroundImage.GetComponent<Image>().sprite.name.IndexOf("_Artist") > -1 && likeCounter < 6 && tempList.Count >= 1 && counterI < 20)
-            {
-                BackgroundImage.GetComponent<Image>().sprite = tempList[randomNumber];
-                counterI++;
-            }
+                while (BackgroundImage.GetComponent<Image>().sprite.name.IndexOf("_Artist") > -1 && likeCounter < 6 && tempList.Count >= 1 && counterI < 20)
+                {
+                    BackgroundImage.GetComponent<Image>().sprite = tempList[randomNumber];
+                    counterI++;
+                }
             }
         }
         else
@@ -671,11 +702,11 @@ public class MovePicture : MonoBehaviour
             Debug.Log(testString);
             if (sprite != PrepareImg)
             {
-            while (BackgroundImage.GetComponent<Image>().sprite.name.IndexOf("_Atmosphere") > -1 && likeCounter < 6 && tempList.Count >= 1 && counterI < 20)
-            {
-                BackgroundImage.GetComponent<Image>().sprite = tempList[randomNumber];
-                counterI++;
-            }
+                while (BackgroundImage.GetComponent<Image>().sprite.name.IndexOf("_Atmosphere") > -1 && likeCounter < 6 && tempList.Count >= 1 && counterI < 20)
+                {
+                    BackgroundImage.GetComponent<Image>().sprite = tempList[randomNumber];
+                    counterI++;
+                }
             }
         }
     }
