@@ -71,6 +71,8 @@ public class MovePicture : MonoBehaviour
     Sprite PrepareImg;
     public Sprite MenuImg;
 
+    public Sprite CanvaImg;
+
     Sprite DisPrepareImg;
 
     public GameObject DislikeAnim;
