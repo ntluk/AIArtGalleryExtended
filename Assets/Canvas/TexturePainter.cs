@@ -27,7 +27,7 @@ public class TexturePainter : MonoBehaviour
 
 
     Color brushColor; //The selected color
-    public float brushSize = 0.3f; //The size of our brush
+    public float brushSize = 0.6f; //The size of our brush
     int brushCounter = 0, MAX_BRUSH_COUNT = 20000; //To avoid having millions of brushes
     bool saving = false; //Flag to check if we are saving the texture
 
@@ -131,7 +131,7 @@ public class TexturePainter : MonoBehaviour
 
 
 
-            brushColor.a = brushSize * 2.0f; // Brushes have alpha to have a merging effect when painted over.
+            brushColor.a = 100; // Brushes have alpha to have a merging effect when painted over.
             brushObj.transform.parent = brushContainer.transform; //Add the brush to our container to be wiped later
             brushObj.transform.localPosition = uvWorldPosition; //The position of the brush (in the UVMap)
             brushObj.transform.localScale = Vector3.one * brushSize;//The size of the brush
