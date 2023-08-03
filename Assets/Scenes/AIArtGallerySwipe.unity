@@ -575,7 +575,7 @@ MonoBehaviour:
   BackgroundImg: {fileID: 0}
   FrontImg: {fileID: 0}
   MenuImg: {fileID: 21300000, guid: c37a8db2c74b3774b8438e881d1fa220, type: 3}
-  CanvaImg: {fileID: 21300000, guid: 0c5eb40fa6f71254c952f57399ff53de, type: 3}
+  CanvaImg: {fileID: 21300000, guid: 16654f99e65969346a5dfdaf6bc22206, type: 3}
   DislikeAnim: {fileID: 1765432122}
   LikeAnim: {fileID: 405119324}
   CanvaQuad: {fileID: 508924315}
@@ -1921,8 +1921,8 @@ MonoBehaviour:
   cursorPaint: {fileID: 21300000, guid: 9a4d001a1160de342a2f68ec1e8a3546, type: 3}
   canvasTexture: {fileID: 8400000, guid: f61ccd9c29385db408a5f44cf2f6c27d, type: 2}
   baseMaterial: {fileID: 2100000, guid: 3c2cf18c9dbdeda4cbb0049192535117, type: 2}
-  tex: {fileID: 2800000, guid: 7f477a79673ca5e46a56c40a693fb51d, type: 3}
-  tex2: {fileID: 2800000, guid: b441fdf5b4a616d47aaa9851a74fa464, type: 3}
+  tex: {fileID: 2800000, guid: 0c5eb40fa6f71254c952f57399ff53de, type: 3}
+  tex2: {fileID: 2800000, guid: cac1ca2ecabf16547aabddc8b4e8a672, type: 3}
   statue: {fileID: 508924315}
   saveMat: {fileID: 2100000, guid: e3cafa6325e19f6489d40c070ae1af70, type: 2}
   rendTex: {fileID: 3569037956764169307}
@@ -2141,7 +2141,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: e79f96e00272afd44bc1e53923e72d33, type: 2}
+  - {fileID: 2100000, guid: 7e8ebbf3b4e14ad41bdab61be6e75df1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
