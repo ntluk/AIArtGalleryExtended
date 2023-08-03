@@ -27,7 +27,7 @@ public class TexturePainter : MonoBehaviour
     public Sprite CanvSprite;
 
 
-    public GameObject Image;
+    //public GameObject Image;
 
 
 
@@ -355,7 +355,7 @@ public void SpriteCreate()
             brushCursor.SetActive(false);
             Texture2D myTexture = toTexture2D(canvasTexture); 
             CanvSprite = TextureToSprite(myTexture);
-            Image.GetComponent<Image>().sprite = CanvSprite;
+            //Image.GetComponent<Image>().sprite = CanvSprite;
             StartCoroutine(SaveTextureToFile(myTexture));
             brushCursor.SetActive(true);
 }
