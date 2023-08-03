@@ -34,10 +34,21 @@ public class MovePicture : MonoBehaviour
     public GameObject Image;
     public GameObject DislikeImage;
     public GameObject LikeImage;
+    public GameObject Background;
+    public GameObject Description;
     public GameObject leftHand;
 
     public int randomNumber;
     public int randomNumber2;
+
+    Dictionary<Sprite, Text> spriteDatabase = new Dictionary<Sprite, Text>();
+
+    [System.Serializable]
+    public struct DescPairs
+    {
+        public Sprite img;
+        public Text desc;
+    }
 
 
     public List<Sprite> PlaceList;
@@ -49,8 +60,12 @@ public class MovePicture : MonoBehaviour
     public List<Sprite> EmotionList;
 
     public List<Sprite> AtmosphereList;
+
+    public DescPairs[] spriteDescriptionPairs;
+
     public List<Sprite> tempList;
     public List<Sprite> dislikeList;
+
 
 
     string TempString = "";
@@ -98,12 +113,18 @@ public class MovePicture : MonoBehaviour
 
         gameMode = GameMode.Menu;
 
+        for (int i = 0; i < spriteDescriptionPairs.Length; i++)
+        {
+            spriteDatabase.Add(spriteDescriptionPairs[i].img, spriteDescriptionPairs[i].desc);
+        }
+
 
         Image.GetComponent<Image>().sprite = MenuImg;
         FrontImg = MenuImg;
 
         prepareTinder();
         Debug.Log(tempList.Count);
+
 
 
         //ChooseImage();
@@ -124,14 +145,21 @@ public class MovePicture : MonoBehaviour
             gameMode = GameMode.Menu;
             prepareTinder();
             likeCounter = 0;
+            Background.SetActive(false);
+            Description.SetActive(false);
         }
 
         if (gameMode == GameMode.Menu || gameMode == GameMode.Tinder)
         {
+            if (gameMode == GameMode.Tinder)
+            {
+                Background.SetActive(true);
+                Description.SetActive(true);
 
+                Description.GetComponent<Text>().text = spriteDatabase[Image.GetComponent<Image>().sprite].text;
+            }
 
-
-            if (control == ControlMode.Kinect)
+                if (control == ControlMode.Kinect)
             {
                 GameObject LeftHand = GameObject.Find("Left_Middle_Finger_Joint_01c");
                 GameObject Ribs = GameObject.Find("Left_Forearm_Joint_01");
