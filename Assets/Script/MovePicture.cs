@@ -20,7 +20,7 @@ public class MovePicture : MonoBehaviour
     }
 
     public ControlMode control;
-    GameMode gameMode;
+    public GameMode gameMode;
 
     // Vector3 test = new Vector3(0.01f,0,0);
     Vector3 test;
@@ -37,7 +37,7 @@ public class MovePicture : MonoBehaviour
     public GameObject leftHand;
 
     public int randomNumber;
-    public int randomNumber2;
+    
 
 
     public List<Sprite> PlaceList;
@@ -85,11 +85,18 @@ public class MovePicture : MonoBehaviour
     bool sent;
 
     int likeCounter = 0;
-    private Rigidbody l;
+    
 
-    bool sameName;
+    
+
+
+    public GameObject CanvaQuad;
 
     private UDPSend sender = new UDPSend();
+
+  
+
+    public TexturePainter texPaint;
 
 
     // Start is called before the first frame update
@@ -231,11 +238,20 @@ public class MovePicture : MonoBehaviour
 
     void Dislike()
     {
-        sameName = true;
+        
         this.transform.position += test;
         this.transform.eulerAngles -= test2;
-        Image.transform.position = new Vector3(this.transform.position.x, Image.transform.position.y, Image.transform.position.z);
-        Image.transform.eulerAngles = new Vector3(Image.transform.eulerAngles.x, Image.transform.eulerAngles.y, -this.transform.eulerAngles.z);
+
+        if (gameMode != GameMode.Canva)
+        {
+            Image.transform.position = new Vector3(this.transform.position.x, Image.transform.position.y, Image.transform.position.z);
+            Image.transform.eulerAngles = new Vector3(Image.transform.eulerAngles.x, Image.transform.eulerAngles.y, -this.transform.eulerAngles.z);
+        }
+        else
+        {
+            CanvaQuad.transform.position = new Vector3(this.transform.position.x, CanvaQuad.transform.position.y, CanvaQuad.transform.position.z);
+            CanvaQuad.transform.eulerAngles = new Vector3(CanvaQuad.transform.eulerAngles.x, CanvaQuad.transform.eulerAngles.y, -this.transform.eulerAngles.z);
+        }
 
 
 
@@ -270,6 +286,7 @@ public class MovePicture : MonoBehaviour
                 DislikeAnim.GetComponent<Image>().sprite = FrontImg;
 
                 FrontImg = CanvaImg;
+                CanvaQuad.transform.position = new Vector3(0, 0, -0.01f) ;
 
 
 
@@ -283,22 +300,28 @@ public class MovePicture : MonoBehaviour
         if (gameMode == GameMode.Canva)
         {
 
-            if (this.transform.position.x > 0)
-                {
-                    BackgroundImage.GetComponent<Image>().sprite = CanvaImg;
-                }
+            if (this.transform.position.x < 0)
+            {
+                Image.GetComponent<Image>().sprite = MenuImg;
+                BackgroundImage.GetComponent<Image>().sprite = MenuImg;
+                
+;            }
 
             if (this.transform.position.x < -2.5)
             {
                 this.transform.position = new Vector3(-2.5f, this.transform.position.y, this.transform.position.z);
                 this.transform.eulerAngles = new Vector3(0, 0, -12.5f);
-                Image.transform.position = new Vector3(this.transform.position.x, Image.transform.position.y, Image.transform.position.z);
-                Image.transform.eulerAngles = new Vector3(Image.transform.eulerAngles.x, Image.transform.eulerAngles.y, -this.transform.eulerAngles.z);
+                CanvaQuad.transform.position = new Vector3(this.transform.position.x, CanvaQuad.transform.position.y, CanvaQuad.transform.position.z);
+                CanvaQuad.transform.eulerAngles = new Vector3(CanvaQuad.transform.eulerAngles.x, CanvaQuad.transform.eulerAngles.y, -this.transform.eulerAngles.z);
+
+             
 
                 this.transform.position = new Vector3(0, this.transform.position.y, this.transform.position.z);
                 this.transform.eulerAngles = new Vector3(0, 0, 0);
-                Image.transform.position = new Vector3(this.transform.position.x, Image.transform.position.y, Image.transform.position.z);
-                Image.transform.eulerAngles = new Vector3(Image.transform.eulerAngles.x, Image.transform.eulerAngles.y, -this.transform.eulerAngles.z);
+                CanvaQuad.transform.position = new Vector3(this.transform.position.x, CanvaQuad.transform.position.y, CanvaQuad.transform.position.z);
+                CanvaQuad.transform.eulerAngles = new Vector3(CanvaQuad.transform.eulerAngles.x, CanvaQuad.transform.eulerAngles.y, -this.transform.eulerAngles.z);
+
+                texPaint.SpriteCreate();
 
                 gameMode = GameMode.Menu;
                 Image.GetComponent<Image>().sprite = MenuImg;
@@ -307,9 +330,11 @@ public class MovePicture : MonoBehaviour
 
                 DislikeAnim.GetComponent<Image>().enabled = true;
                 DislikeAnim.GetComponent<Animator>().Play("Dislike");
-                DislikeAnim.GetComponent<Image>().sprite = FrontImg;
+                DislikeAnim.GetComponent<Image>().sprite = texPaint.CanvSprite;;
 
                 FrontImg = MenuImg;
+
+                CanvaQuad.transform.position = new Vector3(0, 0, +0.01f); 
             }
         }
 
@@ -355,25 +380,33 @@ public class MovePicture : MonoBehaviour
     }
     void Like()
     {
-        sameName = true;
+        
         this.transform.position += test;
         this.transform.eulerAngles += test2;
+
+        if(gameMode != GameMode.Canva)
+        {
         Image.transform.position = new Vector3(this.transform.position.x, Image.transform.position.y, Image.transform.position.z);
         Image.transform.eulerAngles = new Vector3(Image.transform.eulerAngles.x, Image.transform.eulerAngles.y, -this.transform.eulerAngles.z);
-
+        }
+        else
+        {
+             CanvaQuad.transform.position = new Vector3(this.transform.position.x, CanvaQuad.transform.position.y, CanvaQuad.transform.position.z);
+        CanvaQuad.transform.eulerAngles = new Vector3(CanvaQuad.transform.eulerAngles.x, CanvaQuad.transform.eulerAngles.y, -this.transform.eulerAngles.z);
+        }
         if (gameMode == GameMode.Menu)
         {
 
             if (this.transform.position.x > 0)
-                {
-                    BackgroundImage.GetComponent<Image>().sprite = PrepareImg;
-                }
+            {
+                BackgroundImage.GetComponent<Image>().sprite = PrepareImg;
+            }
 
 
             if (this.transform.position.x > 2.5)
             {
 
-                
+
                 this.transform.position = new Vector3(2.5f, this.transform.position.y, this.transform.position.z);
                 this.transform.eulerAngles = new Vector3(0, 0, 12.5f);
                 Image.transform.position = new Vector3(this.transform.position.x, Image.transform.position.y, Image.transform.position.z);
@@ -386,6 +419,7 @@ public class MovePicture : MonoBehaviour
 
                 gameMode = GameMode.Tinder;
                 Image.GetComponent<Image>().sprite = PrepareImg;
+                
 
 
                 LikeAnim.GetComponent<Image>().enabled = true;
@@ -394,7 +428,6 @@ public class MovePicture : MonoBehaviour
                 LikeAnim.GetComponent<Image>().sprite = FrontImg;
 
                 FrontImg = PrepareImg;
-
                 Image.GetComponent<Image>().sprite = FrontImg;
                 //tempList.RemoveAt(randomNumber);
 
@@ -430,9 +463,11 @@ public class MovePicture : MonoBehaviour
         {
 
             if (this.transform.position.x > 0)
-                {
-                    BackgroundImage.GetComponent<Image>().sprite = MenuImg;
-                }
+            {
+                Image.GetComponent<Image>().sprite = CanvaImg;
+                BackgroundImage.GetComponent<Image>().sprite = CanvaImg;
+                
+            }
 
 
             if (this.transform.position.x > 2.5)
@@ -440,13 +475,17 @@ public class MovePicture : MonoBehaviour
 
                 this.transform.position = new Vector3(2.5f, this.transform.position.y, this.transform.position.z);
                 this.transform.eulerAngles = new Vector3(0, 0, 12.5f);
-                Image.transform.position = new Vector3(this.transform.position.x, Image.transform.position.y, Image.transform.position.z);
-                Image.transform.eulerAngles = new Vector3(Image.transform.eulerAngles.x, Image.transform.eulerAngles.y, -this.transform.eulerAngles.z);
+                CanvaQuad.transform.position = new Vector3(this.transform.position.x, CanvaQuad.transform.position.y, CanvaQuad.transform.position.z);
+                CanvaQuad.transform.eulerAngles = new Vector3(CanvaQuad.transform.eulerAngles.x, CanvaQuad.transform.eulerAngles.y, -this.transform.eulerAngles.z);
+
 
                 this.transform.position = new Vector3(0, this.transform.position.y, this.transform.position.z);
                 this.transform.eulerAngles = new Vector3(0, 0, 0);
-                Image.transform.position = new Vector3(this.transform.position.x, Image.transform.position.y, Image.transform.position.z);
-                Image.transform.eulerAngles = new Vector3(Image.transform.eulerAngles.x, Image.transform.eulerAngles.y, -this.transform.eulerAngles.z);
+                CanvaQuad.transform.position = new Vector3(this.transform.position.x, CanvaQuad.transform.position.y, CanvaQuad.transform.position.z);
+                CanvaQuad.transform.eulerAngles = new Vector3(CanvaQuad.transform.eulerAngles.x, CanvaQuad.transform.eulerAngles.y, -this.transform.eulerAngles.z);
+
+                texPaint.SpriteCreate();
+                
 
                 gameMode = GameMode.Menu;
                 Image.GetComponent<Image>().sprite = MenuImg;
@@ -455,9 +494,10 @@ public class MovePicture : MonoBehaviour
                 LikeAnim.GetComponent<Image>().enabled = true;
                 LikeAnim.GetComponent<Animator>().Play("Like");
 
-                LikeAnim.GetComponent<Image>().sprite = FrontImg;
+                LikeAnim.GetComponent<Image>().sprite = texPaint.CanvSprite;
 
                 FrontImg = MenuImg;
+                CanvaQuad.transform.position = new Vector3(0, 0, +0.01f); 
             }
         }
 
@@ -582,6 +622,7 @@ public class MovePicture : MonoBehaviour
 
             }
         }
+        
     }
 
     void prepareTinder()

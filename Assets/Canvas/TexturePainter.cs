@@ -17,13 +17,18 @@ public class TexturePainter : MonoBehaviour
     public Texture2D tex2;
     public GameObject statue;
 
-    public Sprite CanvaSprite;
 
     //Save textures
     public Material saveMat;
     public GameObject rendTex;
 
-   
+    public MovePicture movePicture;
+
+    public Sprite CanvSprite;
+
+
+    public GameObject Image;
+
 
 
     Color brushColor; //The selected color
@@ -39,9 +44,9 @@ public class TexturePainter : MonoBehaviour
     void Start()
     {
 
-        
 
-    
+
+
         brushColor = Color.black;
         brushCursor.GetComponent<SpriteRenderer>().sprite = cursorPaint;
     }
@@ -49,12 +54,22 @@ public class TexturePainter : MonoBehaviour
     void Update()
     {
 
-        
 
-        if (Input.GetMouseButton(0))
+
+        if (Input.GetMouseButton(0) && movePicture.gameMode == MovePicture.GameMode.Canva)
         {
             DoAction();
         }
+
+        if (movePicture.gameMode != MovePicture.GameMode.Canva)
+        {
+            brushCursor.SetActive(false);
+            restoreMaterial();
+        }
+
+
+        
+
 
 
 
@@ -66,7 +81,7 @@ public class TexturePainter : MonoBehaviour
 
         //save texture
 
-        /* SaveTexture2D();
+        /*SaveTexture2D();
          statue.GetComponent<MeshRenderer>().material.mainTexture = canvasTexture;
      */
 
@@ -152,7 +167,7 @@ public class TexturePainter : MonoBehaviour
     void UpdateBrushCursor()
     {
         Vector3 uvWorldPosition = Vector3.zero;
-        if (HitTestUVPosition(ref uvWorldPosition) && !saving)
+        if (HitTestUVPosition(ref uvWorldPosition) && !saving && movePicture.gameMode == MovePicture.GameMode.Canva)
         {
             brushCursor.SetActive(true);
             brushCursor.transform.position = uvWorldPosition + brushContainer.transform.position;
@@ -177,18 +192,18 @@ public class TexturePainter : MonoBehaviour
         {
             if (hit.collider.gameObject == statue)
             {
-            MeshCollider meshCollider = hit.collider as MeshCollider;
-            if (meshCollider == null || meshCollider.sharedMesh == null)
-                return false;
-            Vector2 pixelUV = new Vector2(hit.textureCoord.x, hit.textureCoord.y);
-            uvWorldPosition.x = pixelUV.x - canvasCam.orthographicSize;//To center the UV on X
-            uvWorldPosition.y = pixelUV.y - canvasCam.orthographicSize;//To center the UV on Y
-            uvWorldPosition.z = 0.0f;
-            
-            return true;
+                MeshCollider meshCollider = hit.collider as MeshCollider;
+                if (meshCollider == null || meshCollider.sharedMesh == null)
+                    return false;
+                Vector2 pixelUV = new Vector2(hit.textureCoord.x, hit.textureCoord.y);
+                uvWorldPosition.x = pixelUV.x - canvasCam.orthographicSize;//To center the UV on X
+                uvWorldPosition.y = pixelUV.y - canvasCam.orthographicSize;//To center the UV on Y
+                uvWorldPosition.z = 0.0f;
+
+                return true;
             }
             else
-            return false;
+                return false;
         }
         else
         {
@@ -247,7 +262,7 @@ public class TexturePainter : MonoBehaviour
         string fullPath = "C:\\Users\\soren\\OneDrive\\Desktop" + "\\SavedTextures\\";
         System.DateTime date = System.DateTime.Now;
 
-        string fileName = "_CanvasTexture.png";
+        string fileName = date + "_CanvasTexture.png";
 
         if (!System.IO.Directory.Exists(fullPath))
             System.IO.Directory.CreateDirectory(fullPath);
@@ -298,7 +313,7 @@ public class TexturePainter : MonoBehaviour
         tex2.Apply();
         saveMat.mainTexture = tex2;
 
-        return tex;
+        return tex2;
     }
     public void MaterialToStandard()
     {
@@ -327,31 +342,23 @@ public class TexturePainter : MonoBehaviour
         statue.GetComponent<MeshRenderer>().material = newMaterial;
     }
 
-    /*public void SavePNG()
-	{
-		RenderTexture mRt = new RenderTexture(canvasTexture.width, canvasTexture.height, canvasTexture.depth, RenderTextureFormat.ARGB32, RenderTextureReadWrite.sRGB);
-		mRt.antiAliasing = canvasTexture.antiAliasing;
+    public static Sprite TextureToSprite(Texture2D texture)
+    {
+        Sprite CanvSprite = Sprite.Create(texture, new Rect(0f, 0f, texture.width, texture.height), new Vector2(0.5f, 0.5f), 50f, 0, SpriteMeshType.FullRect);
 
-		var tex = new Texture2D(mRt.width, mRt.height, TextureFormat.ARGB32, false);
-		cam.targetTexture = mRt;
-		cam.Render();
-		RenderTexture.active = mRt;
+        return CanvSprite;
+    }
 
-		tex.ReadPixels(new Rect(0, 0, mRt.width, mRt.height), 0, 0);
-		tex.Apply();
-
-		var path = "Assets/Textures/Rendered textures/" + fileName + ".png";
-		File.WriteAllBytes(path, tex.EncodeToPNG());
-		Debug.Log("Saved file to: " + path);
-
-		DestroyImmediate(tex);
-
-		cam.targetTexture = rt;
-		cam.Render();
-		RenderTexture.active = rt;
-
-		DestroyImmediate(mRt);
-	}*/
+public void SpriteCreate()
+{
+   
+            brushCursor.SetActive(false);
+            Texture2D myTexture = toTexture2D(canvasTexture); 
+            CanvSprite = TextureToSprite(myTexture);
+            Image.GetComponent<Image>().sprite = CanvSprite;
+            StartCoroutine(SaveTextureToFile(myTexture));
+            brushCursor.SetActive(true);
+}
 
 
 }
