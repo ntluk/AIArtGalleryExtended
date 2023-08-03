@@ -258,11 +258,11 @@ public class TexturePainter : MonoBehaviour
     IEnumerator SaveTextureToFile(Texture2D savedTexture)
     {
         brushCounter = 0;
-        //string fullPath=System.IO.Directory.GetCurrentDirectory()+"\\Assets\\" + "\\SavedTextures\\";
-        string fullPath = "C:\\Users\\soren\\OneDrive\\Desktop" + "\\SavedTextures\\";
+        string fullPath=System.IO.Directory.GetCurrentDirectory()+"\\Assets\\SavedTextures\\";
+        //string fullPath = "C:\\Users\\soren\\OneDrive\\Desktop\\SavedTextures\\";
         System.DateTime date = System.DateTime.Now;
 
-        string fileName = date + "_CanvasTexture.png";
+        string fileName = "_CanvasTexture.png";
 
         if (!System.IO.Directory.Exists(fullPath))
             System.IO.Directory.CreateDirectory(fullPath);
