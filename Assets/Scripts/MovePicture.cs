@@ -112,6 +112,7 @@ public class MovePicture : MonoBehaviour
   
 
     public TexturePainter texPaint;
+    public ImageToImage toImage;
 
 
     // Start is called before the first frame update
@@ -513,6 +514,7 @@ public class MovePicture : MonoBehaviour
                 CanvaQuad.transform.eulerAngles = new Vector3(CanvaQuad.transform.eulerAngles.x, CanvaQuad.transform.eulerAngles.y, -this.transform.eulerAngles.z);
 
                 texPaint.SpriteCreate();
+                toImage.Start();
                 
 
                 gameMode = GameMode.Menu;
