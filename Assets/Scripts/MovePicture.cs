@@ -37,6 +37,9 @@ public class MovePicture : MonoBehaviour
     public GameObject Background;
     public GameObject Description;
     public GameObject leftHand;
+    public GameObject rightHand;
+    public GameObject leftForearm;
+    public GameObject rightForearm;
 
     public int randomNumber;
     
@@ -97,12 +100,14 @@ public class MovePicture : MonoBehaviour
 
     bool sleep = false;
     bool isSwipe;
+    bool leftHandUp;
+    bool rightHandUp;
     bool sent;
 
     int likeCounter = 0;
-    
 
-    
+
+ 
 
 
     public GameObject CanvaQuad;
@@ -146,6 +151,9 @@ public class MovePicture : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+
+
         if (likeCounter == 6)
         {
             Image.GetComponent<Image>().sprite = MenuImg;
@@ -155,6 +163,9 @@ public class MovePicture : MonoBehaviour
             likeCounter = 0;
             Background.SetActive(false);
             Description.SetActive(false);
+
+            sleep = true;
+            Invoke("SleepNow", 1f);
         }
 
         if (gameMode == GameMode.Menu || gameMode == GameMode.Tinder)
@@ -169,24 +180,50 @@ public class MovePicture : MonoBehaviour
 
                 if (control == ControlMode.Kinect)
             {
+                
                 GameObject LeftHand = GameObject.Find("Left_Middle_Finger_Joint_01c");
-                GameObject Ribs = GameObject.Find("Left_Forearm_Joint_01");
+                GameObject RightHand = GameObject.Find("Right_Wrist_Joint_01");
+                GameObject LeftForearm = GameObject.Find("Left_Forearm_Joint_01");
+                GameObject RightForearm = GameObject.Find("Right_Forearm_Joint_01");
 
-                if (LeftHand.transform.position.y > Ribs.transform.position.y)
+                
+                if (LeftHand.transform.position.y > LeftForearm.transform.position.y || RightHand.transform.position.y > RightForearm.transform.position.y)
                 {
                     isSwipe = true;
                 }
                 else
-                {
+                { 
                     isSwipe = false;
                 }
+
+                if (LeftHand.transform.position.y > LeftForearm.transform.position.y)
+                {
+                    leftHandUp = true;
+                    rightHandUp = false;
+                }
+                else
+                    leftHandUp = false;
+
+
+                if (RightHand.transform.position.y > RightForearm.transform.position.y)
+                {
+                    rightHandUp = true;
+                    leftHandUp = false;
+                }
+                else
+                    rightHandUp = false;
 
                 if (LeftHand != null)
                     leftHand.transform.position = LeftHand.transform.position;
 
+                if (RightHand != null)
+                    rightHand.transform.position = RightHand.transform.position;
 
 
-                calcVelocity();
+                if (leftHandUp)
+                    calcVelocity(leftHand);
+                else if (rightHandUp)
+                    calcVelocity(rightHand);
 
                 VelVec.x = -VelVec.x / 1000f;
 
@@ -245,6 +282,62 @@ public class MovePicture : MonoBehaviour
                 }
 
             }
+
+            if (control == ControlMode.Kinect)
+            {
+                GameObject LeftHand = GameObject.Find("Left_Middle_Finger_Joint_01c");
+                GameObject RightHand = GameObject.Find("Right_Wrist_Joint_01");
+                GameObject LeftForearm = GameObject.Find("Left_Forearm_Joint_01");
+                GameObject RightForearm = GameObject.Find("Right_Forearm_Joint_01");
+
+
+                
+
+                if (LeftHand.transform.position.y > LeftForearm.transform.position.y )
+                {
+                    isSwipe = true;
+                }
+                else
+                {
+                    isSwipe = false;
+                }
+                if (LeftHand.transform.position.y > LeftForearm.transform.position.y)
+                {
+                    leftHandUp = true;
+                }
+                else
+                    leftHandUp = false;
+
+
+                if (LeftHand != null)
+                    leftHand.transform.position = LeftHand.transform.position;
+
+                if (RightHand != null)
+                    rightHand.transform.position = RightHand.transform.position;
+
+                if (leftHandUp)
+                    calcVelocity(leftHand);
+
+
+
+                VelVec.x = -VelVec.x / 1000f;
+
+                if (VelVec.x < 0 && this.transform.position.x >= -2.5 && sleep == false && isSwipe)
+                {
+                    VelVec.x -= vel.magnitude / 1.8f;
+                    test = new Vector3(VelVec.x, 0, 0);
+                    Dislike();
+                }
+
+
+                if (VelVec.x > 0 && this.transform.position.x < 2.5 && sleep == false && isSwipe)
+                {
+                    VelVec.x += vel.magnitude / 1.8f;
+                    test = new Vector3(VelVec.x, 0, 0);
+                    Like();
+                }
+
+            }
         }
 
     }
@@ -253,15 +346,21 @@ public class MovePicture : MonoBehaviour
     void KinectJoints()
     {
         leftHand = new GameObject();
+        rightHand = new GameObject();
 
         GameObject LeftHand = GameObject.Find("Left_Middle_Finger_Joint_01c");
-        GameObject Ribs = GameObject.Find("Left_Forearm_Joint_01");
+        GameObject RightHand = GameObject.Find("Right_Wrist_Joint_01");
+        GameObject LeftForearm = GameObject.Find("Left_Forearm_Joint_01");
+        GameObject RightForearm = GameObject.Find("Right_Forearm_Joint_01");
+
         if (LeftHand != null)
             leftHand.transform.position = LeftHand.transform.position;
-
-
-
-
+        if (RightHand != null)
+            rightHand.transform.position = RightHand.transform.position;
+        if (LeftForearm != null)
+            leftForearm.transform.position = LeftForearm.transform.position;
+        if (RightForearm != null)
+            rightForearm.transform.position = RightForearm.transform.position;
     }
 
 
@@ -318,7 +417,8 @@ public class MovePicture : MonoBehaviour
                 CanvaQuad.transform.position = new Vector3(0, 0, -0.01f) ;
 
 
-
+                sleep = true;
+                Invoke("SleepNow", 1f);
 
             }
 
@@ -363,7 +463,10 @@ public class MovePicture : MonoBehaviour
 
                 FrontImg = MenuImg;
 
-                CanvaQuad.transform.position = new Vector3(0, 0, +0.01f); 
+                CanvaQuad.transform.position = new Vector3(0, 0, +0.01f);
+
+                sleep = true;
+                Invoke("SleepNow", 1f);
             }
         }
 
@@ -480,7 +583,8 @@ public class MovePicture : MonoBehaviour
                 tempList.RemoveAt(randomNumber);
 
 
-
+                sleep = true;
+                Invoke("SleepNow", 1f);
             }
 
 
@@ -527,7 +631,10 @@ public class MovePicture : MonoBehaviour
                 LikeAnim.GetComponent<Image>().sprite = texPaint.CanvSprite;
 
                 FrontImg = MenuImg;
-                CanvaQuad.transform.position = new Vector3(0, 0, +0.01f); 
+                CanvaQuad.transform.position = new Vector3(0, 0, +0.01f);
+
+                sleep = true;
+                Invoke("SleepNow", 1f);
             }
         }
 
@@ -861,9 +968,9 @@ public class MovePicture : MonoBehaviour
 
     }
 
-    float calcVelocity()
+    float calcVelocity(GameObject hand)
     {
-        float previous = leftHand.transform.position.x;
+        float previous = hand.transform.position.x;
 
         Invoke("waitol", 0.000000001f);
 
@@ -885,7 +992,11 @@ public class MovePicture : MonoBehaviour
 
     float waitol()
     {
-        current = leftHand.transform.position.x;
+        if (leftHandUp)
+            current = leftHand.transform.position.x;
+        else if (rightHandUp)
+            current = rightHand.transform.position.x;
+
         return current;
     }
 

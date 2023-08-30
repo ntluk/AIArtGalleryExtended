@@ -26,6 +26,10 @@ public class TexturePainter : MonoBehaviour
 
     public Sprite CanvSprite;
 
+    public GameObject drawCube;
+
+    [SerializeField] MovePicture controlMode;
+
 
     //public GameObject Image;
 
@@ -181,16 +185,41 @@ public class TexturePainter : MonoBehaviour
     //Returns the position on the texuremap according to a hit in the mesh collider
     public bool HitTestUVPosition(ref Vector3 uvWorldPosition)
     {
-
-        //With mouse
         RaycastHit hit;
-        Vector3 cursorPos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0.0f);
+        if (controlMode.control == MovePicture.ControlMode.Keyboard)
 
-        Ray cursorRay = sceneCamera.ScreenPointToRay(cursorPos);
-
-        if (Physics.Raycast(cursorRay, out hit, 500))
         {
-            if (hit.collider.gameObject == statue)
+            Vector3 cursorPos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0.0f);
+
+            Ray cursorRay = sceneCamera.ScreenPointToRay(cursorPos);
+
+            if (Physics.Raycast(cursorRay, out hit, 500))
+            {
+                if (hit.collider.gameObject == statue)
+                {
+                    MeshCollider meshCollider = hit.collider as MeshCollider;
+                    if (meshCollider == null || meshCollider.sharedMesh == null)
+                        return false;
+                    Vector2 pixelUV = new Vector2(hit.textureCoord.x, hit.textureCoord.y);
+                    uvWorldPosition.x = pixelUV.x - canvasCam.orthographicSize;//To center the UV on X
+                    uvWorldPosition.y = pixelUV.y - canvasCam.orthographicSize;//To center the UV on Y
+                    uvWorldPosition.z = 0.0f;
+
+                    return true;
+                }
+                else
+                    return false;
+            }
+            else
+            {
+                return false;
+            }
+        }     
+        else
+        {
+           
+
+            if (Physics.Raycast(drawCube.transform.position, drawCube.transform.forward, out hit, 1000))
             {
                 MeshCollider meshCollider = hit.collider as MeshCollider;
                 if (meshCollider == null || meshCollider.sharedMesh == null)
@@ -199,15 +228,12 @@ public class TexturePainter : MonoBehaviour
                 uvWorldPosition.x = pixelUV.x - canvasCam.orthographicSize;//To center the UV on X
                 uvWorldPosition.y = pixelUV.y - canvasCam.orthographicSize;//To center the UV on Y
                 uvWorldPosition.z = 0.0f;
-
                 return true;
             }
             else
+            {
                 return false;
-        }
-        else
-        {
-            return false;
+            }
         }
 
 
