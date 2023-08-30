@@ -77,7 +77,7 @@ public class MovePicture : MonoBehaviour
     string strColor = "_Color";
     string strArtist = "_Artist";
     string strAtmos = "_Atmosphere";
-    string strEmotion = "_Emotion";
+    string strEmotion = "_Emotions";
 
     string testString = "";
 
@@ -585,7 +585,7 @@ public class MovePicture : MonoBehaviour
                 }
 
 
-                else if (FrontImg.name.IndexOf("_Emotion") > -1)
+                else if (FrontImg.name.IndexOf("_Emotions") > -1)
                 {
                     TempString = FrontImg.name.Replace(strEmotion, "");
                     testString = strEmotion;
