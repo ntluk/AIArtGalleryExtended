@@ -1,0 +1,23 @@
+{
+  "prompt_text": "Parquet, Hardwood Floor, wood flooring, high definition, close up,",
+  "patch": {
+    "ext": "png",
+    "dtype": "uint8",
+    "width": 512,
+    "height": 512,
+    "url": "https://static-dev.withpoly.com/v3/textures/patches/4faff135-04a6-4279-a54e-0aad9ade8340.png",
+    "patch_id": "8PpaxG6KLm"
+  },
+  "seamless_prompt_text": "Parquet, Hardwood Floor, wood flooring, high definition, close up,",
+  "seamless_patch_scale": 1.01,
+  "upscale_prompt_text": "Parquet, Hardwood Floor, wood flooring, high definition, close up,",
+  "upscale_resolution": 2048,
+  "is_seamless": true,
+  "pbr_mode": "polished",
+  "pbr_generate_color": true,
+  "pbr_generate_normal": true,
+  "pbr_generate_height": true,
+  "pbr_generate_ao": true,
+  "pbr_generate_roughness": true,
+  "pbr_generate_metallic": false
+}
