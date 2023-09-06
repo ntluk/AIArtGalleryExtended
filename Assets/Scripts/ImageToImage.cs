@@ -46,8 +46,10 @@ public class ImageToImage : MonoBehaviour
     {
         UnityEngine.Debug.Log("Writing: " + $"activating env");
         streamWriter.WriteLine($"cd C:/Users/Mirevi/source/repos/CI");
-        streamWriter.WriteLine($"./ci_env/Scripts/activate.bat");
-        streamWriter.WriteLine($"run_ci.py");
+        streamWriter.WriteLine($"cd ci_env/Scripts");
+        streamWriter.WriteLine($"activate.bat");
+        streamWriter.WriteLine($"cd C:/Users/Mirevi/source/repos/CI");
+        streamWriter.WriteLine($"python run_ci.py");
         UnityEngine.Debug.Log("Writing: " + $"CI running...");
     }
 }

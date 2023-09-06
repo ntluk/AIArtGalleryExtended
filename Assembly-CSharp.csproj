@@ -61,6 +61,7 @@
     <Compile Include="Assets\MotionHub PlugIn\Scripts\Streamable.cs" />
     <Compile Include="Assets\MotionHub PlugIn\Scripts\PointManager.cs" />
     <Compile Include="Assets\Scripts\TexturePainter.cs" />
+    <Compile Include="Assets\Scripts\DrawCube.cs" />
     <Compile Include="Assets\MotionHub PlugIn\Scripts\CameraController.cs" />
     <Compile Include="Assets\Scripts\ImageToImage.cs" />
     <Compile Include="Assets\Scripts\LoadImage.cs" />
@@ -71,8 +72,9 @@
     <Compile Include="Assets\MotionHub PlugIn\Scripts\RecorderRemoteController.cs" />
     <Compile Include="Assets\Scripts\Test.cs" />
     <Compile Include="Assets\MotionHub PlugIn\Scripts\Point.cs" />
+    <Compile Include="Assets\Scripts\SmoothSkeleton.cs" />
     <Compile Include="Assets\MotionHub PlugIn\Scripts\UiManager.cs" />
-    <Compile Include="Assets\Scripts\DrawCube.cs" />
+    <Compile Include="Assets\Scripts\SmoothCube.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\MotionHub PlugIn\TextMesh Pro\Resources\Shaders\TMPro.cginc" />

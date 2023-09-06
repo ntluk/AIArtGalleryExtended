@@ -22,7 +22,7 @@ public class DrawCube : MonoBehaviour
 
 
 
-    float speed = 25f;
+    float speed = 20f;
     // Start is called before the first frame update
     void Start()
     {
@@ -35,32 +35,47 @@ public class DrawCube : MonoBehaviour
         /*calcMovement();
         this.transform.position += new Vector3 (tempVel.x, tempVel.y, 0) * Time.deltaTime;*/
 
-        if (movePicture.gameMode == MovePicture.GameMode.Canva)
+        Debug.Log(movePicture.rightHand.name);
+        Debug.Log(movePicture.rightForearm.name);
+        /*if(movePicture.rightHand != null & movePicture.rightForearm != null)
         {
 
-            Debug.Log(movePicture.gameMode);
-            Debug.Log(movePicture.control);
 
-            calcMovement();
-            tempVel.Normalize();
-
-            // Move the object
-            this.transform.position -= new Vector3(tempVel.x, tempVel.y, 0) * speed * Time.deltaTime;
-            this.transform.position = new Vector3(transform.position.x, transform.position.y, -14.838f);
+            if (movePicture.rightHand.transform.position.y >= movePicture.rightForearm.transform.position.y)
+            {*/
 
 
-            if (this.transform.position.x <= -2.6)
-                this.transform.position = new Vector3(-2.6f, this.transform.position.y, -14.838f);
-            if (this.transform.position.x >= 2.6)
-                this.transform.position = new Vector3(2.6f, this.transform.position.y, -14.838f);
-            if (this.transform.position.y <= -3.9)
-                this.transform.position = new Vector3(this.transform.position.x, -3.9f, - 14.838f);
-            if (this.transform.position.y >= 3.9f)
-                this.transform.position = new Vector3(this.transform.position.x, 3.9f, -14.838f);
+                if (movePicture.gameMode == MovePicture.GameMode.Canva)
+                {
 
-            Debug.Log("bin drin");
-        }
+                    Debug.Log(movePicture.gameMode);
+                    Debug.Log(movePicture.control);
+
+                    calcMovement();
+                    tempVel.Normalize();
+
+                    // Move the object
+                    this.transform.position -= new Vector3(tempVel.x, tempVel.y, 0) * speed * Time.deltaTime;
+                    this.transform.position = new Vector3(transform.position.x, transform.position.y, -14.838f);
+
+
+                    if (this.transform.position.x <= -2.6)
+                        this.transform.position = new Vector3(-2.6f, this.transform.position.y, -14.838f);
+                    if (this.transform.position.x >= 2.6)
+                        this.transform.position = new Vector3(2.6f, this.transform.position.y, -14.838f);
+                    if (this.transform.position.y <= -3.9)
+                        this.transform.position = new Vector3(this.transform.position.x, -3.9f, -14.838f);
+                    if (this.transform.position.y >= 3.9f)
+                        this.transform.position = new Vector3(this.transform.position.x, 3.9f, -14.838f);
+
+                    Debug.Log("bin drin");
+                }
+            //}
+        //}
+
+
         
+
     }
 
     Vector3 calcMovement()
@@ -87,7 +102,7 @@ public class DrawCube : MonoBehaviour
         /*if (distance < 1500)
             tempVel = new Vector3(0, 0, 0);
         */
-        if ( distance <= 0.13)
+        if ( distance <= 0.20)
             tempVel = new Vector3(0, 0, 0);
 
 
