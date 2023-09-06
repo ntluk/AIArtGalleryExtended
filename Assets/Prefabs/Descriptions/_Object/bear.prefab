@@ -78,4 +78,4 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Bear
+  m_Text: "B\xE4r\nEr kann auf den Hinterbeinen laufen?!"

@@ -78,6 +78,4 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Famous Painter Da VInci
-
-    Renowned for his characteristic style.'
+  m_Text: "Leonardo da Vinci\n500 Jahre und immernoch Gespr\xE4chsthema"

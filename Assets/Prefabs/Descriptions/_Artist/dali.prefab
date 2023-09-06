@@ -78,6 +78,4 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Famous Painter Dali
-
-    Renowned for his characteristic style.'
+  m_Text: "Salvador Dali\nVerr\xFCckte Bilder und ein surrealer Schnurrbart"

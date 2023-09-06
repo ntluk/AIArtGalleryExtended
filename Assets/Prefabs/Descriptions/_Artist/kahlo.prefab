@@ -78,6 +78,4 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Famous Artist Frida Kahlo.
-
-    Renowned for his characteristic style.'
+  m_Text: "Frida Kahlo\nBl\xFChende Tr\xE4ume und ein schmerzhaftes Leben"
