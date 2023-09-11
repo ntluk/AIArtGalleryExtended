@@ -1,0 +1,22 @@
+{
+  "prompt_text": "walnut wood board, new looking, uniform, extreme fine details, high definition",
+  "patch": {
+    "ext": "png",
+    "dtype": "uint8",
+    "width": 512,
+    "height": 512,
+    "url": "https://static-dev.withpoly.com/v3-voronoi/textures/patches/b9164fbc-7ae1-42c1-a3cb-c69f1c32d2d7.png",
+    "patch_id": "ipD4wHAMAc"
+  },
+  "seamless_prompt_text": "walnut wood board, new looking, uniform, extreme fine details, high definition",
+  "seamless_patch_scale": 1.0,
+  "upscale_prompt_text": "walnut wood board, new looking, uniform, extreme fine details, high definition",
+  "upscale_resolution": 4096,
+  "is_seamless": true,
+  "pbr_mode": "matte",
+  "pbr_generate_normal": false,
+  "pbr_generate_height": false,
+  "pbr_generate_ao": false,
+  "pbr_generate_roughness": true,
+  "pbr_generate_metallic": false
+}

@@ -10,7 +10,7 @@ public class TexturePaint : MonoBehaviour {
     public  Texture          baseTexture;                  // used to deterimne the dimensions of the runtime texture
     public  Material         meshMaterial;                 // used to bind the runtime texture as the albedo of the mesh
     public  GameObject       meshGameobject;
-    public  Shader           UVShader;                     // the shader usedto draw in the texture of the mesh
+    public  Shader           UVShader;                     // the shader used to draw in the texture of the mesh
     public  Mesh             meshToDraw;
     public  Shader           ilsandMarkerShader;
     public  Shader           fixIlsandEdgesShader;
