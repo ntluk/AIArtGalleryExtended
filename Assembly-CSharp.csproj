@@ -58,6 +58,7 @@
   <ItemGroup>
     <Compile Include="Assets\MotionHub PlugIn\Scripts\AvatarManager.cs" />
     <Compile Include="Assets\MotionHub PlugIn\Scripts\Avatar.cs" />
+    <Compile Include="Assets\MusicManager.cs" />
     <Compile Include="Assets\MotionHub PlugIn\Scripts\Streamable.cs" />
     <Compile Include="Assets\MotionHub PlugIn\Scripts\PointManager.cs" />
     <Compile Include="Assets\Scripts\TexturePainter.cs" />

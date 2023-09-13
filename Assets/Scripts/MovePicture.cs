@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -821,24 +822,16 @@ public class MovePicture : MonoBehaviour
 
                 promptText += TempString + ", ";
 
-
-
-
-                SendPrompt();
+                SavePrompt();
 
                 NoDuplicates(BackgroundImg);
 
-
                 ChooseImageLike();
-
-
 
                 sleep = true;
                 Invoke("SleepNow", 1f);
-
             }
-        }
-        
+        }    
     }
 
     void prepareTinder()
@@ -1084,9 +1077,13 @@ public class MovePicture : MonoBehaviour
         sleep = false;
     }
 
-    private void SendPrompt()
+    private void SavePrompt()
     {
-        sender.sendString(promptText);
+        string path = "C:/Users/Mirevi/source/repos/AIArtGalleryExtended/Prompt/prompt.txt";
+
+        StreamWriter writer = new StreamWriter(path);
+        writer.WriteLine(promptText);
+        writer.Close();
     }
 }
 
