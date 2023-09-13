@@ -17,8 +17,8 @@ public class DrawCube : MonoBehaviour
     float verticalInput;
     Vector3 movement;
 
-   
 
+    public bool isDrawing;
 
 
 
@@ -35,21 +35,24 @@ public class DrawCube : MonoBehaviour
         /*calcMovement();
         this.transform.position += new Vector3 (tempVel.x, tempVel.y, 0) * Time.deltaTime;*/
 
-        Debug.Log(movePicture.rightHand.name);
-        Debug.Log(movePicture.rightForearm.name);
+        //Debug.Log(movePicture.rightHand.name);
+        //Debug.Log(movePicture.rightForearm.name);
         /*if(movePicture.rightHand != null & movePicture.rightForearm != null)
         {
 
 
             if (movePicture.rightHand.transform.position.y >= movePicture.rightForearm.transform.position.y)
             {*/
+        if(movePicture.control == MovePicture.ControlMode.Kinect)
+        {
 
+        
 
                 if (movePicture.gameMode == MovePicture.GameMode.Canva)
                 {
 
-                    Debug.Log(movePicture.gameMode);
-                    Debug.Log(movePicture.control);
+                    //Debug.Log(movePicture.gameMode);
+                    //Debug.Log(movePicture.control);
 
                     calcMovement();
                     tempVel.Normalize();
@@ -68,9 +71,10 @@ public class DrawCube : MonoBehaviour
                     if (this.transform.position.y >= 3.9f)
                         this.transform.position = new Vector3(this.transform.position.x, 3.9f, -14.838f);
 
-                    Debug.Log("bin drin");
+                    //Debug.Log("bin drin");
                 }
-            //}
+        
+            }
         //}
 
 
@@ -97,12 +101,12 @@ public class DrawCube : MonoBehaviour
 
         float distance = tempVel.magnitude;
 
-        Debug.Log("distance : " + distance);
+        //Debug.Log("distance : " + distance);
 
         /*if (distance < 1500)
             tempVel = new Vector3(0, 0, 0);
         */
-        if ( distance <= 0.20)
+        if ( distance <= 0.10)
             tempVel = new Vector3(0, 0, 0);
 
 

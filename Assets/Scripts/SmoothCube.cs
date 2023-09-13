@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SmoothCube : MonoBehaviour
 {
-    public float speed = 1;
+    public float speed = 1f;
     public GameObject MoveCube;
     // Start is called before the first frame update
     void Start()

@@ -23,6 +23,7 @@ public class TexturePainter : MonoBehaviour
     public GameObject rendTex;
 
     public MovePicture movePicture;
+    
 
     public Sprite CanvSprite;
 
@@ -36,7 +37,7 @@ public class TexturePainter : MonoBehaviour
 
 
     Color brushColor; //The selected color
-    public float brushSize = 0.6f; //The size of our brush
+    public float brushSize = 1f; //The size of our brush
     int brushCounter = 0, MAX_BRUSH_COUNT = 20000; //To avoid having millions of brushes
     bool saving = false; //Flag to check if we are saving the texture
 
@@ -47,7 +48,7 @@ public class TexturePainter : MonoBehaviour
 
     void Start()
     {
-
+        SetBrushSize();
 
 
 
@@ -58,7 +59,10 @@ public class TexturePainter : MonoBehaviour
     void Update()
     {
 
-
+        if(movePicture.isDrawing)
+        {
+            DoAction();
+        }
 
         if (Input.GetMouseButton(0) && movePicture.gameMode == MovePicture.GameMode.Canva)
         {

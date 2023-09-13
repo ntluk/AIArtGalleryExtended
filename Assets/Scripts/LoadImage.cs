@@ -5,6 +5,7 @@ using System.IO;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
+using UnityEngine.UI;
 
 
 public class LoadImage : MonoBehaviour
@@ -14,6 +15,8 @@ public class LoadImage : MonoBehaviour
   
     public Process process;
     public StreamWriter streamWriter;
+    public Material material;
+    public Sprite SpriteMain;
    
     private Thread thread;
 
@@ -21,6 +24,8 @@ public class LoadImage : MonoBehaviour
 
     private List<string> liLines = new List<string>();
     private List<string> liErrors = new List<string>();
+
+    public Sprite Ergebnis;
 
     
     private OutputStatus outputStatus = OutputStatus.Unfinished;
@@ -30,7 +35,7 @@ public class LoadImage : MonoBehaviour
 
     public void Start()
     {
-        StartCoroutine(loadImage());
+        //StartCoroutine(loadImage());
     }
 
     
@@ -60,18 +65,23 @@ public class LoadImage : MonoBehaviour
 
     public IEnumerator loadImage()
     {
-        FileInfo fileLatestPng = new DirectoryInfo("//ATHENA/outputs").GetFiles().Where(x => Path.GetExtension(x.Name) == ".png").OrderByDescending(f => f.LastWriteTime).First();
+        FileInfo fileLatestPng = new DirectoryInfo("//ATHENA/outputs/images").GetFiles().Where(x => Path.GetExtension(x.Name) == ".png").OrderByDescending(f => f.LastWriteTime).First();
 
         UnityEngine.Debug.Log($" New file appeared! Loading {fileLatestPng.Name}");
 
-       // yield return new WaitUntil(() => !Utility.IsFileLocked(fileLatestPng));
+        yield return new WaitUntil(() => !Utility.IsFileLocked(fileLatestPng));
         yield return new WaitForSeconds(0.1f);
 
         UnityEngine.Debug.Log($"Finished loading image.");
 
         Material mat = new Material(Shader.Find("Standard"));
-        //mat.mainTexture = Utility.texLoadImageSecure(fileLatestPng.FullName, mat.mainTexture as Texture2D);
-        image.GetComponent<Renderer>().material = mat;
+        mat.mainTexture = Utility.texLoadImageSecure(fileLatestPng.FullName, mat.mainTexture as Texture2D);
+        SpriteMain = Sprite.Create(mat.mainTexture as Texture2D, new Rect(0.0f, 0.0f, mat.mainTexture.width, mat.mainTexture.height), new Vector2(0.5f, 0.5f), 100.0f);
+
+        Ergebnis = SpriteMain;
+        image.GetComponent<Image>().sprite = Ergebnis;
+        
+        
     }
  
 }

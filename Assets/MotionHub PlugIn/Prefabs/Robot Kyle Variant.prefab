@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66912c023305fbe44a688d3c7d168f5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  smooth: 100
+  smooth: 10000
   bones: []
   bonesThisFrame: []
   boneroot: {fileID: 1216631366861338499}

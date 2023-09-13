@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Linq;
 
 public class MovePicture : MonoBehaviour
 {
@@ -17,7 +18,9 @@ public class MovePicture : MonoBehaviour
     {
         Menu,
         Tinder,
-        Canva
+        Canva,
+        TinderEnde,
+        CanvaEnde
     }
 
     public ControlMode control;
@@ -42,6 +45,7 @@ public class MovePicture : MonoBehaviour
     public GameObject leftForearm;
     public GameObject rightForearm;
     public GameObject hips;
+    public GameObject rightShoulder;
 
     public int randomNumber;
     
@@ -106,8 +110,12 @@ public class MovePicture : MonoBehaviour
     bool rightHandUp;
     bool sent;
     bool stuckPic;
+    public bool isDrawing;
+    bool onlyDraw;
 
     int likeCounter = 0;
+
+    Sprite tinderErgebnis;
 
 
  
@@ -120,9 +128,9 @@ public class MovePicture : MonoBehaviour
   
 
     public TexturePainter texPaint;
-    public ImageToImage toImage;
+    
 
-
+    [SerializeField] LoadImage Imageload;
     // Start is called before the first frame update
     void Start()
     {
@@ -159,9 +167,27 @@ public class MovePicture : MonoBehaviour
         GameObject RightHand = GameObject.Find("Right_Wrist_Joint_01");
         GameObject LeftForearm = GameObject.Find("Left_Forearm_Joint_01");
         GameObject RightForearm = GameObject.Find("Right_Forearm_Joint_01");
+        GameObject RightShoulder = GameObject.Find("Right_Shoulder_Joint_01");
+        GameObject Hips = GameObject.Find("Hip");
 
         if (likeCounter == 6)
         {
+
+            StartCoroutine(Imageload.loadImage());
+
+
+            Invoke("prepareTinderImg", 0.5f);
+
+            likeCounter++;
+            sleep = true;
+            Invoke("SleepNow", 1f);
+
+        }
+        
+
+        if (likeCounter == 8)
+        {
+   
             Image.GetComponent<Image>().sprite = MenuImg;
             FrontImg = MenuImg;
             gameMode = GameMode.Menu;
@@ -174,7 +200,15 @@ public class MovePicture : MonoBehaviour
             Invoke("SleepNow", 1f);
         }
 
+
+
         
+        
+
+
+
+
+
         if (stuckPic && !isSwipe)
         {
             /*Vector3 test3 = new Vector3(0.001f, 0, 0);
@@ -198,7 +232,7 @@ public class MovePicture : MonoBehaviour
                 
                 float angle = Mathf.MoveTowardsAngle(Image.transform.eulerAngles.z, 0, 10f * Time.deltaTime);
                 Image.transform.eulerAngles = new Vector3(0, 0, angle);
-                Debug.Log(angle);
+                //Debug.Log(angle);
                 angle = 0;
                 
             }
@@ -208,7 +242,7 @@ public class MovePicture : MonoBehaviour
                 
                 float angle = Mathf.MoveTowardsAngle(CanvaQuad.transform.eulerAngles.z, 0, 10f * Time.deltaTime);
                 CanvaQuad.transform.eulerAngles = new Vector3(0, 0, angle);
-                Debug.Log(angle);
+                //Debug.Log(angle);
                 angle = 0;
 
             }
@@ -218,13 +252,14 @@ public class MovePicture : MonoBehaviour
 
         }
 
-        if (gameMode == GameMode.Menu || gameMode == GameMode.Tinder)
+        if (gameMode == GameMode.Menu || gameMode == GameMode.Tinder || gameMode == GameMode.TinderEnde)
         {
             if (gameMode == GameMode.Tinder)
             {
                 Background.SetActive(true);
                 Description.SetActive(true);
 
+                if(likeCounter < 6)
                 Description.GetComponent<Text>().text = spriteDatabase[Image.GetComponent<Image>().sprite].text;
             }
 
@@ -233,10 +268,10 @@ public class MovePicture : MonoBehaviour
                 
                 
 
-                Debug.Log(LeftHand);
-                Debug.Log(RightHand);
-                Debug.Log(LeftForearm);
-                Debug.Log(RightForearm);
+                //Debug.Log(LeftHand);
+                //Debug.Log(RightHand);
+                //Debug.Log(LeftForearm);
+                //Debug.Log(RightForearm);
 
                 //if (LeftHand != null & LeftForearm != null & RightHand != null & RightForearm != null)
                 //{
@@ -354,12 +389,29 @@ public class MovePicture : MonoBehaviour
 
             if (control == ControlMode.Kinect)
             {
-               
+
+                //float DistanceArmHand = RightHand.transform.position.z - RightShoulder.transform.position.z;
+                float DistanceArmHand = Vector3.Distance(RightHand.transform.position, RightShoulder.transform.position);
+                //Debug.Log("Hallo " + DistanceArmHand);
+
+                //if (DistanceArmHand > 7 && DistanceArmHand < 10.5f)
+                //    isDrawing = true;
+                //else
+                //    isDrawing = false;
+
+                if (LeftHand.transform.position.y > LeftForearm.transform.position.y && DistanceArmHand < 10 )
+                {
+                    isDrawing = true;
+                    onlyDraw = true;
+                }
+                else
+                    isDrawing = false;
+
+                if (LeftHand.transform.position.y < LeftForearm.transform.position.y && RightHand.transform.position.y < RightForearm.transform.position.y)
+                    onlyDraw = false;
 
 
-                
-
-                if (LeftHand.transform.position.y > LeftForearm.transform.position.y )
+                if (LeftHand.transform.position.y > LeftForearm.transform.position.y && RightHand.transform.position.y < Hips.transform.position.y && !onlyDraw)
                 {
                     isSwipe = true;
                 }
@@ -429,6 +481,8 @@ public class MovePicture : MonoBehaviour
         GameObject LeftForearm = GameObject.Find("Left_Forearm_Joint_01");
         GameObject RightForearm = GameObject.Find("Right_Forearm_Joint_01");
         GameObject Hips = GameObject.Find("Hip");
+        GameObject RightShoulder = GameObject.Find("Right_Shoulder_Joint_01");
+        
 
         if (LeftHand != null)
             leftHand.transform.position = LeftHand.transform.position;
@@ -440,6 +494,8 @@ public class MovePicture : MonoBehaviour
             rightForearm.transform.position = RightForearm.transform.position;
         if (Hips != null)
             hips.transform.position = Hips.transform.position;
+        if (RightShoulder != null)
+            rightShoulder.transform.position = RightShoulder.transform.position;
 
     }
 
@@ -509,12 +565,14 @@ public class MovePicture : MonoBehaviour
         if (gameMode == GameMode.Canva)
         {
 
+
             if (this.transform.position.x < 0)
             {
-                Image.GetComponent<Image>().sprite = MenuImg;
-                BackgroundImage.GetComponent<Image>().sprite = MenuImg;
-                
-;            }
+                Image.GetComponent<Image>().sprite = CanvaImg;
+                BackgroundImage.GetComponent<Image>().sprite = CanvaImg;
+
+                ;
+            }
 
             if (this.transform.position.x < -2.5)
             {
@@ -523,7 +581,7 @@ public class MovePicture : MonoBehaviour
                 CanvaQuad.transform.position = new Vector3(this.transform.position.x, CanvaQuad.transform.position.y, CanvaQuad.transform.position.z);
                 CanvaQuad.transform.eulerAngles = new Vector3(CanvaQuad.transform.eulerAngles.x, CanvaQuad.transform.eulerAngles.y, -this.transform.eulerAngles.z);
 
-             
+
 
                 this.transform.position = new Vector3(0, this.transform.position.y, this.transform.position.z);
                 this.transform.eulerAngles = new Vector3(0, 0, 0);
@@ -532,18 +590,20 @@ public class MovePicture : MonoBehaviour
 
                 texPaint.SpriteCreate();
 
-                gameMode = GameMode.Menu;
-                Image.GetComponent<Image>().sprite = MenuImg;
+                gameMode = GameMode.Canva;
+                Image.GetComponent<Image>().sprite = CanvaImg;
 
 
 
                 DislikeAnim.GetComponent<Image>().enabled = true;
                 DislikeAnim.GetComponent<Animator>().Play("Dislike");
-                DislikeAnim.GetComponent<Image>().sprite = texPaint.CanvSprite;;
+                DislikeAnim.GetComponent<Image>().sprite = texPaint.CanvSprite; ;
 
-                FrontImg = MenuImg;
+                FrontImg = CanvaImg;
 
-                CanvaQuad.transform.position = new Vector3(0, 0, +0.01f);
+                texPaint.restoreMaterial();
+
+
 
                 sleep = true;
                 Invoke("SleepNow", 1f);
@@ -556,7 +616,7 @@ public class MovePicture : MonoBehaviour
             {
 
 
-
+                
 
 
 
@@ -574,20 +634,61 @@ public class MovePicture : MonoBehaviour
                 DislikeAnim.GetComponent<Image>().enabled = true;
                 DislikeAnim.GetComponent<Animator>().Play("Dislike");
 
-                dislikeList.Add(FrontImg);
+                
+                    dislikeList.Add(FrontImg);
 
 
-                NoDuplicates(BackgroundImg);
+                    NoDuplicates(BackgroundImg);
 
-                ChooseImageDislike();
+                    ChooseImageDislike();
 
 
 
-                sleep = true;
+                    sleep = true;
 
-                Invoke("SleepNow", 1f);
+                    Invoke("SleepNow", 1f);
+                
+                
 
             }
+        }
+        if (gameMode == GameMode.TinderEnde)
+        {
+
+            if (this.transform.position.x < 0)
+            {
+                BackgroundImage.GetComponent<Image>().sprite = MenuImg;
+            }
+
+
+            if (this.transform.position.x < -2.5)
+            {
+
+                likeCounter++;
+                this.transform.position = new Vector3(-2.5f, this.transform.position.y, this.transform.position.z);
+                this.transform.eulerAngles = new Vector3(0, 0, -12.5f);
+                Image.transform.position = new Vector3(this.transform.position.x, Image.transform.position.y, Image.transform.position.z);
+                Image.transform.eulerAngles = new Vector3(Image.transform.eulerAngles.x, Image.transform.eulerAngles.y, -this.transform.eulerAngles.z);
+
+                this.transform.position = new Vector3(0, this.transform.position.y, this.transform.position.z);
+                this.transform.eulerAngles = new Vector3(0, 0, 0);
+                Image.transform.position = new Vector3(this.transform.position.x, Image.transform.position.y, Image.transform.position.z);
+                Image.transform.eulerAngles = new Vector3(Image.transform.eulerAngles.x, Image.transform.eulerAngles.y, -this.transform.eulerAngles.z);
+
+
+                
+
+                //FrontImg = Imageload.loadImage()
+                
+                DislikeAnim.GetComponent<Image>().enabled = true;
+                DislikeAnim.GetComponent<Animator>().Play("Dislike");
+                DislikeAnim.GetComponent<Image>().sprite = FrontImg;
+
+                           
+
+            }
+
+
         }
     }
     void Like()
@@ -698,7 +799,7 @@ public class MovePicture : MonoBehaviour
                 CanvaQuad.transform.eulerAngles = new Vector3(CanvaQuad.transform.eulerAngles.x, CanvaQuad.transform.eulerAngles.y, -this.transform.eulerAngles.z);
 
                 texPaint.SpriteCreate();
-                toImage.Start();
+                
                 
 
                 gameMode = GameMode.Menu;
@@ -721,14 +822,16 @@ public class MovePicture : MonoBehaviour
         if (gameMode == GameMode.Tinder)
         {
 
+            
+
             if (this.transform.position.x > 2.5)
             {
 
 
-
+                
                 likeCounter++;
 
-
+                
 
                 Debug.Log(likeCounter + "likes");
                 this.transform.position = new Vector3(2.5f, this.transform.position.y, this.transform.position.z);
@@ -745,93 +848,142 @@ public class MovePicture : MonoBehaviour
                 LikeAnim.GetComponent<Image>().enabled = true;
                 LikeAnim.GetComponent<Animator>().Play("Like");
 
+                
+
+                
 
 
-                if (FrontImg.name.IndexOf("_Object") > -1)
+                    if (FrontImg.name.IndexOf("_Object") > -1)
+                    {
+
+                        TempString = FrontImg.name.Replace(strObject, "");
+
+                        testString = strObject;
+                        Debug.Log(testString);
+                        Debug.Log("Its an Object");
+
+                        tempList.RemoveAll(item => ObjectList.Contains(item));
+                        dislikeList.RemoveAll(item => ObjectList.Contains(item));
+
+                    }
+
+                    else if (FrontImg.name.IndexOf("_Place") > -1)
+                    {
+                        TempString = FrontImg.name.Replace(strPlace, "");
+                        testString = strPlace;
+                        Debug.Log(testString);
+                        Debug.Log("Its a Place");
+                        tempList.RemoveAll(item => PlaceList.Contains(item));
+                        dislikeList.RemoveAll(item => PlaceList.Contains(item));
+                    }
+
+
+                    else if (FrontImg.name.IndexOf("_Emotions") > -1)
+                    {
+                        TempString = FrontImg.name.Replace(strEmotion, "");
+                        testString = strEmotion;
+                        Debug.Log(testString);
+                        Debug.Log("Its an Emotion");
+
+                        tempList.RemoveAll(item => EmotionList.Contains(item));
+                        dislikeList.RemoveAll(item => EmotionList.Contains(item));
+                    }
+
+
+                    else if (FrontImg.name.IndexOf("_Color") > -1)
+                    {
+                        TempString = FrontImg.name.Replace(strColor, "");
+                        testString = strColor;
+                        Debug.Log(testString);
+                        Debug.Log("Its a Color");
+
+
+                        tempList.RemoveAll(item => ColorList.Contains(item));
+                        dislikeList.RemoveAll(item => ColorList.Contains(item));
+                    }
+
+
+                    else if (FrontImg.name.IndexOf("_Artist") > -1)
+                    {
+                        TempString = FrontImg.name.Replace(strArtist, "");
+                        testString = strArtist;
+                        Debug.Log(testString);
+                        Debug.Log("Its an Artist");
+
+                        tempList.RemoveAll(item => ArtistList.Contains(item));
+                        dislikeList.RemoveAll(item => ArtistList.Contains(item));
+                    }
+
+
+                    else if (FrontImg.name.IndexOf("_Atmosphere") > -1)
+                    {
+                        TempString = FrontImg.name.Replace(strAtmos, "");
+                        testString = strAtmos;
+                        Debug.Log(testString);
+                        Debug.Log("Its an Atmosphere");
+
+                        tempList.RemoveAll(item => AtmosphereList.Contains(item));
+                        dislikeList.RemoveAll(item => AtmosphereList.Contains(item));
+                    }
+
+                    promptText += TempString + ", ";
+
+                    SavePrompt();
+
+                    NoDuplicates(BackgroundImg);
+                    
+                if(likeCounter < 6)
+                    ChooseImageLike();
+                else
                 {
+                    DislikeAnim.GetComponent<Image>().sprite = FrontImg;
+                    LikeAnim.GetComponent<Image>().sprite = FrontImg;
 
-                    TempString = FrontImg.name.Replace(strObject, "");
-
-                    testString = strObject;
-                    Debug.Log(testString);
-                    Debug.Log("Its an Object");
-
-                    tempList.RemoveAll(item => ObjectList.Contains(item));
-                    dislikeList.RemoveAll(item => ObjectList.Contains(item));
-
+                    FrontImg = BackgroundImg;
+                    Image.GetComponent<Image>().sprite = FrontImg;
                 }
 
-                else if (FrontImg.name.IndexOf("_Place") > -1)
-                {
-                    TempString = FrontImg.name.Replace(strPlace, "");
-                    testString = strPlace;
-                    Debug.Log(testString);
-                    Debug.Log("Its a Place");
-                    tempList.RemoveAll(item => PlaceList.Contains(item));
-                    dislikeList.RemoveAll(item => PlaceList.Contains(item));
-                }
-
-
-                else if (FrontImg.name.IndexOf("_Emotions") > -1)
-                {
-                    TempString = FrontImg.name.Replace(strEmotion, "");
-                    testString = strEmotion;
-                    Debug.Log(testString);
-                    Debug.Log("Its an Emotion");
-
-                    tempList.RemoveAll(item => EmotionList.Contains(item));
-                    dislikeList.RemoveAll(item => EmotionList.Contains(item));
-                }
-
-
-                else if (FrontImg.name.IndexOf("_Color") > -1)
-                {
-                    TempString = FrontImg.name.Replace(strColor, "");
-                    testString = strColor;
-                    Debug.Log(testString);
-                    Debug.Log("Its a Color");
-
-
-                    tempList.RemoveAll(item => ColorList.Contains(item));
-                    dislikeList.RemoveAll(item => ColorList.Contains(item));
-                }
-
-
-                else if (FrontImg.name.IndexOf("_Artist") > -1)
-                {
-                    TempString = FrontImg.name.Replace(strArtist, "");
-                    testString = strArtist;
-                    Debug.Log(testString);
-                    Debug.Log("Its an Artist");
-
-                    tempList.RemoveAll(item => ArtistList.Contains(item));
-                    dislikeList.RemoveAll(item => ArtistList.Contains(item));
-                }
-
-
-                else if (FrontImg.name.IndexOf("_Atmosphere") > -1)
-                {
-                    TempString = FrontImg.name.Replace(strAtmos, "");
-                    testString = strAtmos;
-                    Debug.Log(testString);
-                    Debug.Log("Its an Atmosphere");
-
-                    tempList.RemoveAll(item => AtmosphereList.Contains(item));
-                    dislikeList.RemoveAll(item => AtmosphereList.Contains(item));
-                }
-
-                promptText += TempString + ", ";
-
-                SavePrompt();
-
-                NoDuplicates(BackgroundImg);
-
-                ChooseImageLike();
-
-                sleep = true;
-                Invoke("SleepNow", 1f);
+                    sleep = true;
+                    Invoke("SleepNow", 1f);
+                
             }
-        }    
+        }
+
+        if (gameMode == GameMode.TinderEnde)
+        {
+
+            if (this.transform.position.x > 0)
+            {
+                BackgroundImage.GetComponent<Image>().sprite = MenuImg;
+            }
+
+
+            if (this.transform.position.x > 2.5)
+            {
+                likeCounter++;
+
+                this.transform.position = new Vector3(2.5f, this.transform.position.y, this.transform.position.z);
+                this.transform.eulerAngles = new Vector3(0, 0, 12.5f);
+                Image.transform.position = new Vector3(this.transform.position.x, Image.transform.position.y, Image.transform.position.z);
+                Image.transform.eulerAngles = new Vector3(Image.transform.eulerAngles.x, Image.transform.eulerAngles.y, -this.transform.eulerAngles.z);
+
+                this.transform.position = new Vector3(0, this.transform.position.y, this.transform.position.z);
+                this.transform.eulerAngles = new Vector3(0, 0, 0);
+                Image.transform.position = new Vector3(this.transform.position.x, Image.transform.position.y, Image.transform.position.z);
+                Image.transform.eulerAngles = new Vector3(Image.transform.eulerAngles.x, Image.transform.eulerAngles.y, -this.transform.eulerAngles.z);
+
+                
+
+                LikeAnim.GetComponent<Image>().enabled = true;
+                LikeAnim.GetComponent<Animator>().Play("Like");
+
+                LikeAnim.GetComponent<Image>().sprite = FrontImg;
+
+            }
+
+
+
+        }
     }
 
     void prepareTinder()
@@ -1008,14 +1160,17 @@ public class MovePicture : MonoBehaviour
         FrontImg = BackgroundImg;
         Image.GetComponent<Image>().sprite = FrontImg;
 
-        randomNumber = Random.Range(0, tempList.Count - 1);
-
+        
+            randomNumber = Random.Range(0, tempList.Count - 1);
+        
         int counterI = 0;
         while (FrontImg.name.Contains(testString) && tempList[randomNumber].name.Contains(testString) && counterI < 200)
         {
-            randomNumber = Random.Range(0, tempList.Count - 1);
+            
+                randomNumber = Random.Range(0, tempList.Count - 1);
 
-            counterI++;
+                counterI++;
+            
         }
         Debug.Log(counterI);
 
@@ -1085,5 +1240,21 @@ public class MovePicture : MonoBehaviour
         writer.WriteLine(promptText);
         writer.Close();
     }
+
+    private void prepareTinderImg()
+    {
+        tinderErgebnis = Imageload.Ergebnis;
+        FrontImg = tinderErgebnis;
+
+        gameMode = GameMode.TinderEnde;
+        BackgroundImage.GetComponent<Image>().sprite = MenuImg;
+
+        Background.SetActive(false);
+        Description.SetActive(false);
+    }
+
+      
+    
+
 }
 
