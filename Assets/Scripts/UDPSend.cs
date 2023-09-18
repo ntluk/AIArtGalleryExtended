@@ -34,7 +34,7 @@ public class UDPSend : MonoBehaviour
     {
         print("UDPSend.init()");
 
-        IP = "172.16.1.74";
+        IP = "127.0.0.1";
         port = 8051;
 
         remoteEndPoint = new IPEndPoint(IPAddress.Parse(IP), port);

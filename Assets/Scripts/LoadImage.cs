@@ -66,6 +66,7 @@ public class LoadImage : MonoBehaviour
     public IEnumerator loadImage()
     {
         FileInfo fileLatestPng = new DirectoryInfo("//ATHENA/outputs/images").GetFiles().Where(x => Path.GetExtension(x.Name) == ".png").OrderByDescending(f => f.LastWriteTime).First();
+        //FileInfo fileLatestPng = new DirectoryInfo("C:/Users/Chynvero/Pictures").GetFiles().Where(x => Path.GetExtension(x.Name) == ".png").OrderByDescending(f => f.LastWriteTime).First();
 
         UnityEngine.Debug.Log($" New file appeared! Loading {fileLatestPng.Name}");
 

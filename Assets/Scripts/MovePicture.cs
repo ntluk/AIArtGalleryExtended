@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
 
+
 public class MovePicture : MonoBehaviour
 {
 
@@ -124,6 +125,7 @@ public class MovePicture : MonoBehaviour
     public GameObject CanvaQuad;
 
     private UDPSend sender = new UDPSend();
+    private OSC osc = new OSC();
 
   
 
@@ -134,7 +136,6 @@ public class MovePicture : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
         gameMode = GameMode.Menu;
 
         for (int i = 0; i < spriteDescriptionPairs.Length; i++)
@@ -162,7 +163,6 @@ public class MovePicture : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
         GameObject LeftHand = GameObject.Find("Left_Middle_Finger_Joint_01c");
         GameObject RightHand = GameObject.Find("Right_Wrist_Joint_01");
         GameObject LeftForearm = GameObject.Find("Left_Forearm_Joint_01");
@@ -172,10 +172,9 @@ public class MovePicture : MonoBehaviour
 
         if (likeCounter == 6)
         {
-
+            sender.sendString("txt2img");
             StartCoroutine(Imageload.loadImage());
-
-
+            sender.sendString("");
             Invoke("prepareTinderImg", 0.5f);
 
             likeCounter++;
@@ -814,9 +813,12 @@ public class MovePicture : MonoBehaviour
                 FrontImg = MenuImg;
                 CanvaQuad.transform.position = new Vector3(0, 0, +0.01f);
 
+                sender.sendString("img2img");
                 sleep = true;
                 Invoke("SleepNow", 1f);
+                sender.sendString("");
             }
+
         }
 
         if (gameMode == GameMode.Tinder)
@@ -929,8 +931,9 @@ public class MovePicture : MonoBehaviour
                     promptText += TempString + ", ";
 
                     SavePrompt();
+                    
 
-                    NoDuplicates(BackgroundImg);
+                NoDuplicates(BackgroundImg);
                     
                 if(likeCounter < 6)
                     ChooseImageLike();
@@ -1235,6 +1238,7 @@ public class MovePicture : MonoBehaviour
     private void SavePrompt()
     {
         string path = "C:/Users/Mirevi/source/repos/AIArtGalleryExtended/Prompt/prompt.txt";
+        //string path = "C:/Projects/ci/prompt.txt";
 
         StreamWriter writer = new StreamWriter(path);
         writer.WriteLine(promptText);
