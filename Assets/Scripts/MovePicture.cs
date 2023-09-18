@@ -75,6 +75,8 @@ public class MovePicture : MonoBehaviour
 
     public List<Sprite> tempList;
     public List<Sprite> dislikeList;
+    public AudioClip[] songs;
+    private AudioSource audioSource;
 
 
 
@@ -137,6 +139,7 @@ public class MovePicture : MonoBehaviour
     void Start()
     {
         gameMode = GameMode.Menu;
+        audioSource = GetComponent<AudioSource>();
 
         for (int i = 0; i < spriteDescriptionPairs.Length; i++)
         {
@@ -158,6 +161,9 @@ public class MovePicture : MonoBehaviour
         {
             KinectJoints();
         }
+        audioSource.clip = songs[0];
+        if (!audioSource.isPlaying)
+            audioSource.Play();
     }
 
     // Update is called once per frame
@@ -253,8 +259,18 @@ public class MovePicture : MonoBehaviour
 
         if (gameMode == GameMode.Menu || gameMode == GameMode.Tinder || gameMode == GameMode.TinderEnde)
         {
+            if (gameMode == GameMode.Menu)
+            {
+                audioSource.clip = songs[0];
+                if (!audioSource.isPlaying)
+                    audioSource.Play();
+            }
+
             if (gameMode == GameMode.Tinder)
             {
+                audioSource.clip = songs[1];
+                if (!audioSource.isPlaying)
+                    audioSource.Play();
                 Background.SetActive(true);
                 Description.SetActive(true);
 
@@ -365,6 +381,10 @@ public class MovePicture : MonoBehaviour
 
         if (gameMode == GameMode.Canva)
         {
+            audioSource.clip = songs[2];
+            if (!audioSource.isPlaying)
+                audioSource.Play();
+
             if (control == ControlMode.Keyboard)
             {
                 if (Input.GetKey("q") && this.transform.position.x > -2.5)
