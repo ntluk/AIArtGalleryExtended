@@ -1,20 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class SmoothCube : MonoBehaviour
-{
-    public float speed = 1f;
-    public GameObject MoveCube;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        transform.position = Vector3.MoveTowards(this.transform.position, MoveCube.transform.position, speed * Time.deltaTime);
-    }
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:973802b13d1853eab7a3893c0974251a5b2ff1c04a400f2f23d367adbe103e0c
+size 474

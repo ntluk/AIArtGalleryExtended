@@ -1,16 +1,3 @@
-{
-  "source": "Unity",
-  "applications": [
-    {
-      "app_key": "application.generated.unity.vrtexttoimageartgallery.exe",
-      "launch_type": "url",
-      "url": "steam://launch/",
-      "action_manifest_path": "C:\\Users\\Mirevi\\source\\repos\\VRTextToImageArtGallery\\Assets\\StreamingAssets\\SteamVR\\actions.json",
-      "strings": {
-        "en_us": {
-          "name": "VRTextToImageArtGallery [Testing]"
-        }
-      }
-    }
-  ]
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:728b880e80fa9218b42d851dc270ad62f7b82c768f26122b2cdf7a966273458b
+size 445

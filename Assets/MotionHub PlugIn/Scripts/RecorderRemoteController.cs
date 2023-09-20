@@ -1,34 +1,3 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-namespace MMH
-{
-    public class RecorderRemoteController : MonoBehaviour
-    {
-        OSC oscmanager;
-
-        OscMessage mess;
-
-        private void Start()
-        {
-            // find oscmanager refference
-            oscmanager = GameObject.Find("$oscmanager").GetComponent<OSC>();
-
-            //create OSC message
-            mess = new OscMessage();
-
-            //fill message header and content
-            mess.address = "/mh/Recorder/";
-            mess.values.Add("toggleRec");
-
-        }
-        public void ToggleRecorder()
-        {
-            //send message
-            oscmanager.Send(mess);
-        }
-
-
-    }
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:f7870aa556305f8367fd69996e69e7c3fd2b1ad43f3219de84d9924581e22867
+size 715
